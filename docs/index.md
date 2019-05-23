@@ -1,15 +1,15 @@
 ---
-layout: default
-title:  Home
+layout:
+title:  one-Shot
 ---
 
-Source code: https://github.com/USER/PROJECT (_fix this_)
+Source code: https://github.com/shaoyih/One-Shot
 
 Reports:
 
-- [Proposal](proposal.html)
-- [Status](status.html)
-- [Final](final.html)
+- [Proposal](proposal.md)
+- [Status](status.md)
+- [Final](final.md)
 
 What's Markdown (`.md`)?
 
@@ -19,8 +19,7 @@ No angle brackets `<></>` required for
 paragraphs, lists, blockquotes, tables, etc.
 
 
-This is a paragraph (in Markdown). Some more
-text here.
+This is a paragraph (in Markdown). Some more text here.
 
 This is another paragraph.
 
