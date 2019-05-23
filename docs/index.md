@@ -1,5 +1,5 @@
 ---
-layout:
+layout:  
 title:  one-Shot
 ---
 
@@ -11,25 +11,18 @@ Reports:
 - [Status](status.md)
 - [Final](final.md)
 
-What's Markdown (`.md`)?
+<h3>Goal</h3>
+First goal of our project is to let the agent to shoot a motionless target:
 
-Markdown is markup that lets you write hypertext (HTML) documents
-in easy-to-read and easy-to-write plain text.
-No angle brackets `<></>` required for
-paragraphs, lists, blockquotes, tables, etc.
+As the graph shown above, the target is standing right in front of us. Agent can only change it's up/down angle to aim at the mob.
 
+Second goal of our project is to let the agent to shoot a moving-horizontally target:
 
-This is a paragraph (in Markdown). Some more text here.
+More goals are coming!
 
-This is another paragraph.
+<h3>Environment setting</h3>
+We're have two 10 * 10 stages separated by a 3 block-length gap, where Mob is standing on one stage, agent is facing the mob on the other. We chose Zombie as the Mob(target). Zombie has a 15 life long(3 shot). Time is set to sunset so that Zombie can still live. Peacons and Glowstone are used as our light resource.
 
-This is a list:
-
-- Orange
-- Apple
-- Blueberry
-
-$$x^2 = y^2$$
 
 
 Just getting started with Markdown?
