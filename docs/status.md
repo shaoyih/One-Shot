@@ -4,10 +4,11 @@ title:  Status
 ---
 
 ## Project Summary
-We trained our agents so that it can kill the Zombie using 3 arrows(3 arrows life).
+We are training our agent learning how to shot the arrows. The goal is improve our agent's precision be more accurately.
 
 ## Approach
 We used Reinforcement learning - Qtable
+  Our MDP is that every time our agent shot, we check the target's(ex: zombie, zombie pigmane) life. If target's life is lower than last time we check, that means agent hit the target. At this moment, we give agent a positive point. If target's life still same, we give negative point to agent.
 
 ## Evaluation
 
