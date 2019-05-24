@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Proposal
+title: oneShot
 ---
 
 ## Summary of Project
