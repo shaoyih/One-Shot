@@ -11,7 +11,10 @@ We used Reinforcement learning - Qtable
   Our MDP is that every time our agent shot, we check the target's(ex: zombie, zombie pigmane) life. If target's life is lower than last time we check, that means agent hit the target. At this moment, we give agent a positive point. If target's life still same, we give negative point to agent.
 
 ## Evaluation
-RL學習是一種強調如何基於環境行動，從而取得最大化的預期利益。在我們的modul中， 我們的射手需要從每一次的射擊中區分出有效射擊與無效射擊，最後進行有效射擊。
+RL學習是一種強調如何基於環境行動，從而取得最大化的預期利益。
+在我們的modul中， 我們的射手需要從每一次的射擊中區分出有效射擊與無效射擊，最後進行有效射擊。圖表中有顯示reward為100的即為有效射擊，reward為-5的則是無效射擊(這裡放一張分數圖同時有-5 and 100)。目前我們的射手有40%的機率會隨機從0-90度中選擇一個角度來射擊，有60%的機率會從曾經射擊過的路線中取較為精準的路線射擊。
+之後短期的目標是在擁有越來越多的射擊次數之後，逐步減少隨機的概率(因為總共就只有那麼90*10^n個角度(在有限制位數的情況))在標示了大部分的射擊角度與結果之後 找出最容易射中固定靶(目前)的角度區間
+
 ## Remaining Goals and Challenges
 <h3>Goal</h3>
 Our goal for next phase is to shoot a zombie that is moving.
