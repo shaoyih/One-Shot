@@ -11,7 +11,7 @@ We used Reinforcement learning - Qtable
   Our MDP is that every time our agent shot, we check the target's(ex: zombie, zombie pigmane) life. If target's life is lower than last time we check, that means agent hit the target. At this moment, we give agent a positive point. If target's life still same, we give negative point to agent.
 
 ## Evaluation
-
+RL學習是一種強調如何基於環境行動，從而取得最大化的預期利益。在我們的modul中， 我們的射手需要從每一次的射擊中區分出有效射擊與無效射擊，最後進行有效射擊。
 ## Remaining Goals and Challenges
 <h3>Goal</h3>
 Our goal for next phase is to shoot a zombie that is moving.
