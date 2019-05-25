@@ -10,6 +10,12 @@ We are training our agent learning how to shot the arrows. The goal is improve o
 We used Reinforcement learning - Qtable
   Our MDP is that every time our agent shot, we check the target's(ex: zombie, zombie pigmane) life. If target's life is lower than last time we check, that means agent hit the target. At this moment, we give agent a positive point. If target's life still same, we give negative point to agent.
 
+Reward function is easy to understand. Everytime when our agent hit the target, it return 100 point. If agent doesn't hit the target, it will return -5 to agent. The target for this function is according to let our agent knows what kind of shoot is good and should be redo. Some of idea for this function, does we need to make it give different point based on how many shot that agent alreadt shot. We haven't decided we want to make this change or not, but we will keep tracking about it. 
+
+The actions that our agent will do in this project are moving his angle and shoot. 
+
+
+
 ## Evaluation
 RL學習是一種強調如何基於環境行動，從而取得最大化的預期利益。
 在我們的modul中， 我們的射手需要從每一次的射擊中區分出有效射擊與無效射擊，最後進行有效射擊。圖表中有顯示reward為100的即為有效射擊，reward為-5的則是無效射擊(這裡放一張分數圖同時有-5 and 100)。目前我們的射手有40%的機率會隨機從0-90度中選擇一個角度來射擊，有60%的機率會從曾經射擊過的路線中取較為精準的路線射擊。
