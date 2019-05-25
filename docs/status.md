@@ -22,114 +22,114 @@ The actions that our agent will do in this project are changing it aiming angle 
 ## Evaluation
 In our project, we offer the agent a policy to distinguish if the arrow hit the target by grade each round. If the agent hit the target, we will reward him with 100 points. If not, we will punish him -5 points. In the agent side, it has a q-table to record all of this information. In the meanwhile, as described above, agent can choose from the random angle(40% probability) or the highest value from the Q-table(60%). If the agent can find a 'hit' angle in the early time, which will be great, because the agent will keep on shooting using that high reward value. However, if we cannot find the angle that can hit the target, the highest value in q-table would be -5 all the time. In this case, 60% chance of looking up q-table to get high value is basically wasted. Therefore, setting  probability of random or q-table could be a headache problem. So far, our best result of finding the best value is at 166th trial.
 
-Sample data from 1-55:
-Starting...
-angle, reward:  0.38725 -5
-angle, reward:  0.60655 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-5 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-10 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.29656 -5
-15 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.85687 -5
-angle, reward:  0.38725 -5
-20 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38947 -5
-25 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.77648 -5
-30 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.66041 -5
-angle, reward:  0.2326 -5
-35 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-40 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.59727 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.95011 -5
-45 Showing best policy: 0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.27456 -5
-angle, reward:  0.4894 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.50249 -5
-50 Showing best policy: 0.38725 -5
-angle, reward:  0.6115 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-angle, reward:  0.38725 -5
-55 Showing best policy: 0.38725 -5
-...
-...
-...
-165 Showing best policy: 0.38725 -5
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.23656 -5
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-170 Showing best policy: 0.0925 100
-angle, reward:  0.57508 -5
-angle, reward:  0.0925 100
-angle, reward:  0.84311 -5
-angle, reward:  0.0925 100
-angle, reward:  0.94159 -5
-175 Showing best policy: 0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.21343 -5
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-180 Showing best policy: 0.0925 100
-angle, reward:  0.83821 -5
-angle, reward:  0.30575 -5
-angle, reward:  0.91743 -5
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-185 Showing best policy: 0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-190 Showing best policy: 0.0925 100
-angle, reward:  0.13697 -5
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-angle, reward:  0.0925 100
-195 Showing best policy: 0.0925 100
+Sample data from 1-55:<br>
+Starting...<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.60655 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+5 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+10 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.29656 -5<br>
+15 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.85687 -5<br>
+angle, reward:  0.38725 -5<br>
+20 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38947 -5<br>
+25 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.77648 -5<br>
+30 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.66041 -5<br>
+angle, reward:  0.2326 -5<br>
+35 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+40 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.59727 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.95011 -5<br>
+45 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.27456 -5<br>
+angle, reward:  0.4894 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.50249 -5<br>
+50 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.6115 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+angle, reward:  0.38725 -5<br>
+55 Showing best policy: 0.38725 -5<br>
+...<br>
+...<br>
+...<br>
+165 Showing best policy: 0.38725 -5<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.23656 -5<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+170 Showing best policy: 0.0925 100<br>
+angle, reward:  0.57508 -5<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.84311 -5<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.94159 -5<br>
+175 Showing best policy: 0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.21343 -5<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+180 Showing best policy: 0.0925 100<br>
+angle, reward:  0.83821 -5<br>
+angle, reward:  0.30575 -5<br>
+angle, reward:  0.91743 -5<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+185 Showing best policy: 0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+190 Showing best policy: 0.0925 100<br>
+angle, reward:  0.13697 -5<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+angle, reward:  0.0925 100<br>
+195 Showing best policy: 0.0925 100<br>
 
 ## Remaining Goals and Challenges
 
