@@ -137,22 +137,22 @@ angle, reward:  0.0925 100<br>
 Our goal for next phase is to shoot a zombie that is moving.
 
 
-<h3>Challenges<h3>
+<h3>Challenges</h3>
 
-<h4>Blood info<h4>
+<h4>Blood info</h4>
 First and the biggest challenges we have during the implementation is find the life info of the Zombie(target), since we need it detect if we actually shot Zombie. While exploring the tutoring code, we find that we can actually get that info from <ObservationFromNearbyEntities>.
 
 <h4>Long Distance lead to diverge of arrow</h4>
 During the experiment, we found out that if the agent is set too far away from the target, same yaw, same angle can result in a different places. As we search through the website, it is a fact in the Minecraft world. We learned that the arrow will be off its established place.
 We have some hard time on what type of methodwe should use to training our agent.
 
-Sample data: 
-angle, reward:  0.52537 -5
-angle, reward:  0.60934 -5
-angle, reward:  0.03893 100
-angle, reward:  0.03893 -5
-angle, reward:  0.52537 -5
-45 Showing best policy: 0.52537 -5
+Sample data:<br>
+angle, reward:  0.52537 -5<br>
+angle, reward:  0.60934 -5<br>
+angle, reward:  0.03893 100<br>
+angle, reward:  0.03893 -5<br>
+angle, reward:  0.52537 -5<br>
+45 Showing best policy: 0.52537 -5<br>
 
 
 <h4>Make Zombie move continuously<h4>
