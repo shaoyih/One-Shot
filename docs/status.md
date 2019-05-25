@@ -12,7 +12,7 @@ We used Reinforcement learning - Qtable
 
 Reward function is easy to understand. Everytime when our agent hit the target, it return 100 point. If agent doesn't hit the target, it will return -5 to agent. The target for this function is according to let our agent knows what kind of shoot is good and should be redo. Some of idea for this function, does we need to make it give different point based on how many shot that agent alreadt shot. We haven't decided we want to make this change or not, but we will keep tracking about it. 
 
-The actions that our agent will do in this project are moving his angle and shoot. 
+The actions that our agent will do in this project are moving his angle and shoot. At the training begin, our agent will pick a random angle to shoot. This action will keep looping and getting more and more shooting data. After the first shoot, our agent will start choosing does he want to randomly pick a angle or he want to use the data he alreadt collect from pass shot. When there are more data that agent collect, he will have more options to improve his accuracy
 
 
 
