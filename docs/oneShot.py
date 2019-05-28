@@ -63,7 +63,7 @@ def GetMissionXML():
                   <AgentSection mode="Creative">
                     <Name>MalmoTutorialBot</Name>
                     <AgentStart>
-                        <Placement x="6" y="80" z="0" yaw="90"/>
+                        <Placement x="16" y="80" z="0" yaw="90"/>
 
     				<Inventory>
     					<InventoryItem slot="0" type="bow"/>
