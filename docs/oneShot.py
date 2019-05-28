@@ -13,13 +13,24 @@ import errno
 from collections import defaultdict
 from timeit import default_timer as timer
 
+
+def random_Pos():
+    rNum=random.randint(-3,3)
+    
+    result='''<DrawCuboid x1="-6" y1="78" z1="{}" x2="-4" y2="80" z2="{}" type="glowstone"/>
+                          <DrawCuboid x1="-5" y1="78" z1="{}" x2="-4" y2="80" z2="{}" type="air"/>
+                          <DrawCuboid x1="-3" y1="78" z1="{}" x2="-3" y2="78" z2="{}" type="fence"/>
+                          <DrawEntity x="-4" y="80" z="{}" type="Zombie"/>
+                '''.format(rNum-2,rNum+1,rNum-1,rNum,rNum-2,rNum+1,rNum)
+    return result
+
 def GetMissionXML():
     ''' Build an XML mission string that uses the RewardForCollectingItem mission handler.'''
 
     return '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                   <About>
-                    <Summary>Hello world!</Summary>
+                        <Summary>Hello world!</Summary>
                   </About>
 
                 <ServerSection>
@@ -41,10 +52,8 @@ def GetMissionXML():
                           <DrawCuboid x1="-13" y1="77" z1="-10" x2="-13" y2="77" z2="10" type="beacon"/>
                           <DrawCuboid x1="-13" y1="77" z1="-10" x2="-4" y2="77" z2="-10" type="beacon"/>
                           <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
-                          <DrawCuboid x1="-6" y1="78" z1="-2" x2="-4" y2="80" z2="1" type="glowstone"/>
-                          <DrawCuboid x1="-5" y1="78" z1="-1" x2="-4" y2="80" z2="0" type="air"/>
-                          <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="1" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="0" type="Zombie"/>
+                          
+                            '''+random_Pos()+'''
                       </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
