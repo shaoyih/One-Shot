@@ -10,86 +10,16 @@ import json
 import random
 import math
 import errno
+import arena as mode
 from collections import defaultdict
 from timeit import default_timer as timer
 
 
-def random_Pos():
-    rNum=random.randint(-3,3)
 
-    result='''<DrawCuboid x1="-6" y1="78" z1="{}" x2="-4" y2="80" z2="{}" type="glowstone"/>
-                          <DrawCuboid x1="-5" y1="78" z1="{}" x2="-4" y2="80" z2="{}" type="air"/>
-                          <DrawCuboid x1="-3" y1="78" z1="{}" x2="-3" y2="78" z2="{}" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="{}" type="Zombie"/>
-                '''.format(rNum-2,rNum+1,rNum-1,rNum,rNum-2,rNum+1,rNum)
-    return result
 
 def GetMissionXML():
-    ''' Build an XML mission string that uses the RewardForCollectingItem mission handler.'''
-
-    return '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-                <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                  <About>
-                        <Summary>Hello world!</Summary>
-                  </About>
-
-                <ServerSection>
-                  <ServerInitialConditions>
-                    <Time>
-                        <StartTime>12800</StartTime>
-                        <AllowPassageOfTime>false</AllowPassageOfTime>
-                    </Time>
-                    <Weather>clear</Weather>
-                  </ServerInitialConditions>
-                  <ServerHandlers>
-                      <FlatWorldGenerator generatorString="3;7,44*49,73,35:1,159:4,95:13,35:13,159:11,95:10,159:14,159:6,35:6,95:6;12;"/>
-                      <DrawingDecorator>
-                          <DrawCuboid x1="-14" y1="74" z1="-11" x2="17" y2="77" z2="11" type="diamond_block"/>
-                          <DrawCuboid x1="-2" y1="74" z1="-11" x2="0" y2="77" z2="11" type="air"/>
-                          <DrawCuboid x1="16" y1="77" z1="-10" x2="16" y2="77" z2="10" type="beacon"/>
-                          <DrawCuboid x1="2" y1="77" z1="-10" x2="16" y2="77" z2="-10" type="beacon"/>
-                          <DrawCuboid x1="2" y1="77" z1="10" x2="16" y2="77" z2="10" type="beacon"/>
-                          <DrawCuboid x1="-13" y1="77" z1="-10" x2="-13" y2="77" z2="10" type="beacon"/>
-                          <DrawCuboid x1="-13" y1="77" z1="-10" x2="-4" y2="77" z2="-10" type="beacon"/>
-                          <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
-
-                            '''+random_Pos()+'''
-                      </DrawingDecorator>
-                      <ServerQuitFromTimeUp timeLimitMs="200000"/>
-                      <ServerQuitWhenAnyAgentFinishes/>
-                    </ServerHandlers>
-                  </ServerSection>
-
-                  <AgentSection mode="Creative">
-                    <Name>MalmoTutorialBot</Name>
-                    <AgentStart>
-                        <Placement x="16" y="80" z="0" yaw="90"/>
-
-    				<Inventory>
-    					<InventoryItem slot="0" type="bow"/>
-    					<InventoryItem slot="1" type="arrow" />
-    				</Inventory>
-
-                    </AgentStart>
-                    <AgentHandlers>
-                      <ObservationFromNearbyEntities>
-                           <Range name="entities" xrange="40" yrange="3" zrange="40"/>
-                      </ObservationFromNearbyEntities>
-                      <ObservationFromFullStats/>
-                      <ObservationFromGrid>
-                          <Grid name="floor3x3">
-                            <min x="-4" y="78" z="-1"/>
-                            <max x="-4" y="78" z="-1"/>
-                          </Grid>
-                      </ObservationFromGrid>
-                      <AbsoluteMovementCommands/>
-                      <ContinuousMovementCommands turnSpeedDegs="180"/>
-                      <MissionQuitCommands/>
-                      <InventoryCommands/>
-
-                    </AgentHandlers>
-                  </AgentSection>
-                </Mission>'''
+    ''' arena's level is depending on the free moving area of zombie from easy(3x3) medium(5x5) hard(7x7)'''
+    return mode.easy
 
 class Shoot(object):
     def __init__(self, n):
