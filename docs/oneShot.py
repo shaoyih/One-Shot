@@ -19,7 +19,7 @@ from timeit import default_timer as timer
 
 def GetMissionXML():
     ''' arena's level is depending on the free moving area of zombie from easy(3x3) medium(5x5) hard(7x7)'''
-    return mode.easy
+    return mode.hard
 
 class Shoot(object):
     def __init__(self, n):
@@ -38,15 +38,26 @@ class Shoot(object):
     def launch(self, angle):
         # set angle
         # shoot with full power
+        degrees = 0.0
+        world_state = agent_host.getWorldState()
+        for x in world_state.observations:
+            for y in json.loads(x.text).get('entities'):
+                if "Zombie" in y['name']:
+                    print("Life Zombie:", y['life'], " position:", y['x'],y['z'])
+                    degree =math.atan((y['z']-0.5)/(y['x']-11))
+                    degrees = math.degrees(degree)
+                    print("new angle:", degrees)
+                    agent_host.sendCommand("setYaw "+str(90+degrees))
         agent_host.sendCommand("use 1")
         time.sleep(1)
         agent_host.sendCommand("setPitch -"+str(angle))
+        time.sleep(0.1)
         agent_host.sendCommand("use 0")
 
     def choose_action(self):
         """
         return angle
-        """
+        """ 
         rand = random.uniform(0,1)
         if rand < self.epsilon or len(self.q_table) == 0:
             angle = random.randint(0,45)
