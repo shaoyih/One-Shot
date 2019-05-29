@@ -16,7 +16,7 @@ from timeit import default_timer as timer
 
 def random_Pos():
     rNum=random.randint(-3,3)
-    
+
     result='''<DrawCuboid x1="-6" y1="78" z1="{}" x2="-4" y2="80" z2="{}" type="glowstone"/>
                           <DrawCuboid x1="-5" y1="78" z1="{}" x2="-4" y2="80" z2="{}" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="{}" x2="-3" y2="78" z2="{}" type="fence"/>
@@ -52,7 +52,7 @@ def GetMissionXML():
                           <DrawCuboid x1="-13" y1="77" z1="-10" x2="-13" y2="77" z2="10" type="beacon"/>
                           <DrawCuboid x1="-13" y1="77" z1="-10" x2="-4" y2="77" z2="-10" type="beacon"/>
                           <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
-                          
+
                             '''+random_Pos()+'''
                       </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
@@ -82,6 +82,7 @@ def GetMissionXML():
                             <max x="-4" y="78" z="-1"/>
                           </Grid>
                       </ObservationFromGrid>
+                      <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
@@ -106,20 +107,11 @@ class Shoot(object):
 
     def launch(self, angle):
         # set angle
-        agent_host.sendCommand("pitch -0.1")
-        time.sleep(angle)
-        agent_host.sendCommand("pitch 0")
         # shoot with full power
-        time.sleep(0.1)
         agent_host.sendCommand("use 1")
         time.sleep(1)
+        agent_host.sendCommand("setPitch -"+str(angle))
         agent_host.sendCommand("use 0")
-        time.sleep(0.1)
-        # reset angle
-        agent_host.sendCommand("pitch 0.1")
-        time.sleep(angle)
-        agent_host.sendCommand("pitch 0")
-        time.sleep(0.5)
 
     def choose_action(self):
         """
@@ -127,7 +119,7 @@ class Shoot(object):
         """
         rand = random.uniform(0,1)
         if rand < self.epsilon or len(self.q_table) == 0:
-            angle = round(random.uniform(0,1),5)
+            angle = random.randint(0,45)
         else:
             angle = max(self.q_table.items(), key=lambda x:x[1])[0]
         return angle
