@@ -59,8 +59,10 @@ easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
+                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
+                      
 
                     </AgentHandlers>
                   </AgentSection>
@@ -126,6 +128,7 @@ medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
+                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
 
@@ -192,6 +195,7 @@ hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
+                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
 
