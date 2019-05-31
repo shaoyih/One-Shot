@@ -28,7 +28,7 @@ easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-7" y1="78" z1="-2" x2="-4" y2="80" z2="2" type="glowstone"/>
                           <DrawCuboid x1="-6" y1="78" z1="-1" x2="-4" y2="80" z2="1" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="-1" x2="-3" y2="78" z2="1" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="0" type="Zombie"/>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
                       </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
@@ -38,7 +38,7 @@ easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                   <AgentSection mode="Creative">
                     <Name>MalmoTutorialBot</Name>
                     <AgentStart>
-                        <Placement x="16" y="80" z="0" yaw="90"/>
+                        <Placement x="11" y="80" z="0.5" yaw="90"/>
 
     				<Inventory>
     					<InventoryItem slot="0" type="bow"/>
@@ -57,6 +57,7 @@ easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                             <max x="-4" y="78" z="-1"/>
                           </Grid>
                       </ObservationFromGrid>
+                      <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
@@ -94,7 +95,7 @@ medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-9" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="glowstone"/>
                           <DrawCuboid x1="-8" y1="78" z1="-2" x2="-3" y2="80" z2="2" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="2" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="0" type="Zombie"/>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
                       </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
@@ -104,7 +105,7 @@ medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                   <AgentSection mode="Creative">
                     <Name>MalmoTutorialBot</Name>
                     <AgentStart>
-                        <Placement x="16" y="80" z="0" yaw="90"/>
+                        <Placement x="11" y="80" z="0.5" yaw="90"/>
 
     				<Inventory>
     					<InventoryItem slot="0" type="bow"/>
@@ -123,6 +124,7 @@ medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                             <max x="-4" y="78" z="-1"/>
                           </Grid>
                       </ObservationFromGrid>
+                      <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
@@ -159,7 +161,7 @@ hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-11" y1="78" z1="-4" x2="-3" y2="80" z2="4" type="glowstone"/>
                           <DrawCuboid x1="-10" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="-3" x2="-3" y2="78" z2="3" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="0" type="Zombie"/>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
                       </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
@@ -169,7 +171,7 @@ hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                   <AgentSection mode="Creative">
                     <Name>MalmoTutorialBot</Name>
                     <AgentStart>
-                        <Placement x="16" y="80" z="0" yaw="90"/>
+                        <Placement x="11" y="80" z="0.5" yaw="90"/>
 
     				<Inventory>
     					<InventoryItem slot="0" type="bow"/>
@@ -188,6 +190,7 @@ hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                             <max x="-4" y="78" z="-1"/>
                           </Grid>
                       </ObservationFromGrid>
+                      <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
@@ -195,5 +198,3 @@ hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                     </AgentHandlers>
                   </AgentSection>
                 </Mission>'''
-
-
