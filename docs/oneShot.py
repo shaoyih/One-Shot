@@ -11,18 +11,24 @@ import random
 import math
 import errno
 import arena as mode
-from collections import defaultdict
+from collections import defaultdict, deque
 from timeit import default_timer as timer
 
-
-
+yaw5=[79,81,83,85,87,89,91,93,95,97,99,101]
+pitch=[1,0,-1,-2,-3,-4,-5,-6,-7]
+act=['shoot','hold']
+possible_actions = []
+for i in yaw5:
+    for j in pitch:
+        for k in act:
+            possible_actions.append((i,j,k))
 
 def GetMissionXML():
     ''' arena's level is depending on the free moving area of zombie from easy(3x3) medium(5x5) hard(7x7)'''
-    return mode.hard
+    return mode.medium
 
 class Shoot(object):
-    def __init__(self, n):
+    def __init__(self, alpha = 0.5, gamma=0.1, n=1):
         """Constructing an RL agent.
 
         Args
@@ -30,74 +36,102 @@ class Shoot(object):
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.3 # chance of taking a random action instead of the best
+        self.epsilon = 0.4 # chance of taking a random action instead of the best
         self.q_table = {}
-        self.n = n
-        self.alive = True
+        self.n, self.alpha, self.gamma = n, alpha, gamma
 
-    def launch(self, angle):
+    def launch(self,angle):
         # set angle
         # shoot with full power
         degrees = 0.0
-        world_state = agent_host.getWorldState()
-        for x in world_state.observations:
-            for y in json.loads(x.text).get('entities'):
-                if "Zombie" in y['name']:
-                    print("Life Zombie:", y['life'], " position:", y['x'],y['z'])
-                    degree =math.atan((y['z']-0.5)/(y['x']-11))
-                    degrees = math.degrees(degree)
-                    print("new angle:", degrees)
-                    agent_host.sendCommand("setYaw "+str(90+degrees))
         agent_host.sendCommand("use 1")
         time.sleep(1)
-        agent_host.sendCommand("setPitch -"+str(angle))
+        agent_host.sendCommand("setYaw "+str(angle[0]))
+        agent_host.sendCommand("setPitch "+str(angle[1]))
         time.sleep(0.1)
         agent_host.sendCommand("use 0")
+        time.sleep(0.1)
 
-    def choose_action(self):
+    def get_zombie_state(self,agent_host):
+        # wait 0.1 s to be able to fetch the next worldState
+        global life
+        time.sleep(0.1)
+        state = agent_host.getWorldState()
+        for x in state.observations:
+            for y in json.loads(x.text).get('entities'):
+                if "Zombie" in y['name']:
+                    mx = 0
+                    mz = 0
+                    if y['motionX'] < 0: mx = -1
+                    elif y['motionX'] > 0: mx = 1
+                    if y['motionZ'] < 0: mz = -1
+                    elif y['motionZ'] > 0: m = 1
+                    life = y['life']
+                    return (int(round(y['z'])),int(round(y['x'])),mz,mx)
+
+    def choose_action(self, s0):
+        if s0 not in self.q_table:
+            self.q_table[s0] = {}
+        for action in possible_actions:
+            if action not in self.q_table[s0]:
+                self.q_table[s0][action] = 0
         """
-        return angle
-        """ 
+        return pitch & angle
+        """
         rand = random.uniform(0,1)
-        if rand < self.epsilon or len(self.q_table) == 0:
-            angle = random.randint(0,45)
+        if rand < self.epsilon:
+            return (random.choice(yaw5),random.choice(pitch),random.choice(act))
         else:
-            angle = max(self.q_table.items(), key=lambda x:x[1])[0]
+            angle = max(self.q_table[s0].items(), key=lambda x:x[1])[0]
         return angle
 
     def act(self, agent_host, angle):
-        global target_life
-        last_life = target_life
+        global life
+        if angle[2] == 'hold':
+            return 0
         self.launch(angle)
+        time.sleep(0.3)
         world_state = agent_host.getWorldState()
         for x in world_state.observations:
             for y in json.loads(x.text).get('entities'):
                 if "Zombie" in y['name']:
                     target_life = y['life']
-                    if last_life - target_life > 0:
-                        return 100
+                    if life - target_life > 0:
+                        return 20-5
                     else:
-                        return -5
-        self.alive = False
+                        return -10-5
         agent_host.sendCommand('quit')
-        return 0
+        return 100-5
 
-    def update_q_table(self, a0, r0):
-        self.q_table[a0] = r0
+    def update_q_table(self, S, A, R):
+        curr_s, curr_a, curr_r = S[0], A[0], R[0]
+        G = sum([self.gamma ** i * R[i] for i in range(len(S))])
+        old_q = self.q_table[curr_s][curr_a]
+        self.q_table[curr_s][curr_a] = old_q + self.alpha * (G - old_q)
+        print("state:",curr_s,"action:",curr_a,"reward:",self.q_table[curr_s][curr_a])
 
     def run(self, agent_host):
-        """Learns the process to compile the best gift for dad. """
-        while True:
-            a0 = self.choose_action()
+        """Learns the process to kill the mob in fewest shot. """
+        S, A, R = deque(), deque(), deque()
+        shot = 0
+        while shot < 5:
+            s0 = self.get_zombie_state(agent_host)
+            a0= self.choose_action(s0)
+            if a0[2] == 'shoot':
+                shot += 1
             r0 = self.act(agent_host, a0)
-            if r0 == 0:
-                break
-            self.update_q_table(a0, r0)
-            print("angle, reward: ", a0, r0)
-            time.sleep(0.1)
+            S.append(s0)
+            A.append(a0)
+            R.append(r0)
+            print(s0,a0,r0)
+        while len(S) >= 1:
+            self.update_q_table(S, A, R)
+            S.popleft()
+            A.popleft()
+            R.popleft()
+        agent_host.sendCommand('quit')
 
-target_life = 20
-
+life = 0
 if __name__ == '__main__':
     print('Starting...', flush=True)
     my_client_pool = MalmoPython.ClientPool()
@@ -139,9 +173,5 @@ if __name__ == '__main__':
             world_state = agent_host.getWorldState()
 
         # Every few iteration Odie will show us the best policy that he learned.
-        target_life = 20
         odie.run(agent_host)
-        if (iRepeat + 1) % 5 == 0:
-            bestP = max(odie.q_table.items(), key=lambda x:x[1])
-            print((iRepeat+1), 'Showing best policy:', bestP[0],bestP[1])
         time.sleep(1)
