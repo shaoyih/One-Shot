@@ -10,79 +10,23 @@ import json
 import random
 import math
 import errno
-from collections import defaultdict
+import arena as mode
+from collections import defaultdict, deque
 from timeit import default_timer as timer
 
+yaw5=[75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105]
+pitch=[1,0,-1,-2,-3,-4,-5,-6,-7]
+possible_actions = []
+for i in yaw5:
+    for j in pitch:
+        possible_actions.append((i,j))
+
 def GetMissionXML():
-    ''' Build an XML mission string that uses the RewardForCollectingItem mission handler.'''
-
-    return '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-                <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                  <About>
-                    <Summary>Hello world!</Summary>
-                  </About>
-
-                <ServerSection>
-                  <ServerInitialConditions>
-                    <Time>
-                        <StartTime>12800</StartTime>
-                        <AllowPassageOfTime>false</AllowPassageOfTime>
-                    </Time>
-                    <Weather>clear</Weather>
-                  </ServerInitialConditions>
-                  <ServerHandlers>
-                      <FlatWorldGenerator generatorString="3;7,44*49,73,35:1,159:4,95:13,35:13,159:11,95:10,159:14,159:6,35:6,95:6;12;"/>
-                      <DrawingDecorator>
-                          <DrawCuboid x1="-14" y1="74" z1="-11" x2="17" y2="77" z2="11" type="diamond_block"/>
-                          <DrawCuboid x1="-2" y1="74" z1="-11" x2="0" y2="77" z2="11" type="air"/>
-                          <DrawCuboid x1="16" y1="77" z1="-10" x2="16" y2="77" z2="10" type="beacon"/>
-                          <DrawCuboid x1="2" y1="77" z1="-10" x2="16" y2="77" z2="-10" type="beacon"/>
-                          <DrawCuboid x1="2" y1="77" z1="10" x2="16" y2="77" z2="10" type="beacon"/>
-                          <DrawCuboid x1="-13" y1="77" z1="-10" x2="-13" y2="77" z2="10" type="beacon"/>
-                          <DrawCuboid x1="-13" y1="77" z1="-10" x2="-4" y2="77" z2="-10" type="beacon"/>
-                          <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
-                          <DrawCuboid x1="-6" y1="78" z1="-2" x2="-4" y2="80" z2="1" type="glowstone"/>
-                          <DrawCuboid x1="-5" y1="78" z1="-1" x2="-4" y2="80" z2="0" type="air"/>
-                          <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="1" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="0" type="Zombie"/>
-                      </DrawingDecorator>
-                      <ServerQuitFromTimeUp timeLimitMs="200000"/>
-                      <ServerQuitWhenAnyAgentFinishes/>
-                    </ServerHandlers>
-                  </ServerSection>
-
-                  <AgentSection mode="Creative">
-                    <Name>MalmoTutorialBot</Name>
-                    <AgentStart>
-                        <Placement x="16" y="80" z="0" yaw="90"/>
-
-    				<Inventory>
-    					<InventoryItem slot="0" type="bow"/>
-    					<InventoryItem slot="1" type="arrow" />
-    				</Inventory>
-
-                    </AgentStart>
-                    <AgentHandlers>
-                      <ObservationFromNearbyEntities>
-                           <Range name="entities" xrange="40" yrange="3" zrange="40"/>
-                      </ObservationFromNearbyEntities>
-                      <ObservationFromFullStats/>
-                      <ObservationFromGrid>
-                          <Grid name="floor3x3">
-                            <min x="-4" y="78" z="-1"/>
-                            <max x="-4" y="78" z="-1"/>
-                          </Grid>
-                      </ObservationFromGrid>
-                      <ContinuousMovementCommands turnSpeedDegs="180"/>
-                      <MissionQuitCommands/>
-                      <InventoryCommands/>
-
-                    </AgentHandlers>
-                  </AgentSection>
-                </Mission>'''
+    ''' arena's level is depending on the free moving area of zombie from easy(3x3) medium(5x5) hard(7x7)'''
+    return mode.hard
 
 class Shoot(object):
-    def __init__(self, n):
+    def __init__(self, alpha = 0.5, gamma=1, n=1):
         """Constructing an RL agent.
 
         Args
@@ -90,75 +34,90 @@ class Shoot(object):
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.3 # chance of taking a random action instead of the best
+        self.epsilon = 0.5 # chance of taking a random action instead of the best
         self.q_table = {}
-        self.n = n
-        self.alive = True
+        self.n, self.alpha, self.gamma = n, alpha, gamma
 
-    def launch(self, angle):
+    def launch(self,angle):
         # set angle
-        agent_host.sendCommand("pitch -0.1")
-        time.sleep(angle)
-        agent_host.sendCommand("pitch 0")
         # shoot with full power
-        time.sleep(0.1)
+        degrees = 0.0
         agent_host.sendCommand("use 1")
         time.sleep(1)
+        agent_host.sendCommand("setYaw "+str(angle[0]))
+        agent_host.sendCommand("setPitch "+str(angle[1]))
+        time.sleep(0.1)
         agent_host.sendCommand("use 0")
         time.sleep(0.1)
-        # reset angle
-        agent_host.sendCommand("pitch 0.1")
-        time.sleep(angle)
-        agent_host.sendCommand("pitch 0")
-        time.sleep(0.5)
 
-    def choose_action(self):
+    def get_zombie_state(self,agent_host):
+        # wait 0.1 s to be able to fetch the next worldState
+        global life
+        time.sleep(0.1)
+        state = agent_host.getWorldState()
+        for x in state.observations:
+            for y in json.loads(x.text).get('entities'):
+                if "Zombie" in y['name']:
+                    mx = 0
+                    mz = 0
+                    if y['motionX'] < 0: mx = -1
+                    elif y['motionX'] > 0: mx = 1
+                    if y['motionZ'] < 0: mz = -1
+                    elif y['motionZ'] > 0: m = 1
+                    life = y['life']
+                    return (round(y['z']),round(y['x']),mz,mx)
+
+    def choose_action(self, s0):
+        if s0 not in self.q_table:
+            self.q_table[s0] = {}
+        for action in possible_actions:
+            if action not in self.q_table[s0]:
+                self.q_table[s0][action] = -15
         """
-        return angle
+        return pitch & angle
         """
         rand = random.uniform(0,1)
-        if rand < self.epsilon or len(self.q_table) == 0:
-            angle = round(random.uniform(0,1),5)
+        if rand < self.epsilon:
+            print("r shot")
+            return (random.choice(yaw5),random.choice(pitch))
         else:
-            angle = max(self.q_table.items(), key=lambda x:x[1])[0]
+            print("q shot")
+            angle = max(self.q_table[s0].items(), key=lambda x:x[1])[0]
         return angle
 
     def act(self, agent_host, angle):
-        global target_life
-        last_life = target_life
+        global life
         self.launch(angle)
+        time.sleep(0.3)
         world_state = agent_host.getWorldState()
         for x in world_state.observations:
             for y in json.loads(x.text).get('entities'):
                 if "Zombie" in y['name']:
                     target_life = y['life']
-                    if last_life - target_life > 0:
-                        return 100
+                    if life - target_life > 0:
+                        print("hit!")
+                        return 5
                     else:
+                        print("miss!")
                         return -5
-        self.alive = False
         agent_host.sendCommand('quit')
-        return 0
+        return 100
 
-    def update_q_table(self, a0, r0):
-        self.q_table[a0] = r0
+    def update_q_table(self, S, A, R):
+        self.q_table[S][A] = R
+        print("state:",S,"action:",A,"reward:",self.q_table[S][A],"best:",max(self.q_table[S].items(), key=lambda x:x[1])[0])
+
 
     def run(self, agent_host):
-        """Learns the process to compile the best gift for dad. """
+        """Learns the process to kill the mob in fewest shot. """
         while True:
-            a0 = self.choose_action()
+            s0 = self.get_zombie_state(agent_host)
+            a0= self.choose_action(s0)
             r0 = self.act(agent_host, a0)
-            if r0 == 0:
+            if r0 > self.q_table[s0][a0]:
+                self.update_q_table(s0,a0,r0)
+            if r0 == 100:
                 break
-            elif r0 == 100:
-                self.update_q_table(a0, r0)
-                if len(q_table) >= 2:
-
-
-            print("angle, reward: ", a0, r0)
-            time.sleep(0.1)    
-
-target_life = 20
 
 if __name__ == '__main__':
     print('Starting...', flush=True)
@@ -179,7 +138,7 @@ if __name__ == '__main__':
     odie = Shoot(n=0)
     for iRepeat in range(num_reps):
         my_mission = MalmoPython.MissionSpec(GetMissionXML(), True)
-        my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default2
+        my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
         my_mission.setViewpoint(0)
         max_retries = 3
         for retry in range(max_retries):
@@ -201,9 +160,5 @@ if __name__ == '__main__':
             world_state = agent_host.getWorldState()
 
         # Every few iteration Odie will show us the best policy that he learned.
-        target_life = 20
         odie.run(agent_host)
-        if (iRepeat + 1) % 5 == 0:
-            bestP = max(odie.q_table.items(), key=lambda x:x[1])
-            print((iRepeat+1), 'Showing best policy:', bestP[0],bestP[1])
         time.sleep(1)
