@@ -23,9 +23,16 @@ for i in yaw5:
         for k in act:
             possible_actions.append((i,j,k))
 
-def GetMissionXML():
+def GetMissionXML(stri):
     ''' arena's level is depending on the free moving area of zombie from easy(3x3) medium(5x5) hard(7x7)'''
-    return mode.medium
+    if stri == 'easy':
+        return mode.easy_h+'''<DrawEntity x="'''+str(random.randint(-6,-5)+0.5) + '''" y="80" z="''' + str(random.randint(0,1)-0.5) + '''" type="Zombie"/>''' + mode.easy_e
+    elif stri == 'medium':
+        return mode.medium_h + '''<DrawEntity x="''' + str(random.randint(-8,-5)+0.5) + '''" y="80" z="''' + str(random.randint(-1,2)-0.5) + '''" type="Zombie"/>''' + mode.medium_e
+    elif stri == 'hard':
+        return mode.hard_h + '''<DrawEntity x="''' + str(random.randint(-11,-5)+0.5) + '''" y="80" z="''' + str(random.randint(-2,3)-0.5) + '''" type="Zombie"/>''' + mode.hard_e
+    else:
+        return 'error'
 
 class Shoot(object):
     def __init__(self, alpha = 0.5, gamma=0.1, n=1):
@@ -36,7 +43,7 @@ class Shoot(object):
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.4 # chance of taking a random action instead of the best
+        self.epsilon = 0.5 # chance of taking a random action instead of the best
         self.q_table = {}
         self.n, self.alpha, self.gamma = n, alpha, gamma
 
@@ -150,7 +157,7 @@ if __name__ == '__main__':
     num_reps = 30000
     odie = Shoot(n=0)
     for iRepeat in range(num_reps):
-        my_mission = MalmoPython.MissionSpec(GetMissionXML(), True)
+        my_mission = MalmoPython.MissionSpec(GetMissionXML('medium'), True)
         my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
         my_mission.setViewpoint(0)
         max_retries = 3
