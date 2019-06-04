@@ -1,11 +1,11 @@
+from builtins import range
+import random
 
-
-easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+easy_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                   <About>
                         <Summary>Hello world!</Summary>
                   </About>
-
                 <ServerSection>
                   <ServerInitialConditions>
                     <Time>
@@ -28,23 +28,20 @@ easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-7" y1="78" z1="-2" x2="-4" y2="80" z2="2" type="glowstone"/>
                           <DrawCuboid x1="-6" y1="78" z1="-1" x2="-4" y2="80" z2="1" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="-1" x2="-3" y2="78" z2="1" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
-                      </DrawingDecorator>
+                          '''
+easy_e = '''</DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
                     </ServerHandlers>
                   </ServerSection>
-
                   <AgentSection mode="Creative">
                     <Name>MalmoTutorialBot</Name>
                     <AgentStart>
                         <Placement x="11" y="80" z="0.5" yaw="90"/>
-
     				<Inventory>
     					<InventoryItem slot="0" type="bow"/>
     					<InventoryItem slot="1" type="arrow" />
     				</Inventory>
-
                     </AgentStart>
                     <AgentHandlers>
                       <ObservationFromNearbyEntities>
@@ -59,22 +56,18 @@ easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
-                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
-                      
-
                     </AgentHandlers>
                   </AgentSection>
                 </Mission>'''
 
 
-medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+medium_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                   <About>
                         <Summary>Hello world!</Summary>
                   </About>
-
                 <ServerSection>
                   <ServerInitialConditions>
                     <Time>
@@ -96,24 +89,20 @@ medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
                           <DrawCuboid x1="-9" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="glowstone"/>
                           <DrawCuboid x1="-8" y1="78" z1="-2" x2="-3" y2="80" z2="2" type="air"/>
-                          <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="2" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
-                      </DrawingDecorator>
+                          <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="2" type="fence"/>'''
+medium_e = '''</DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
                     </ServerHandlers>
                   </ServerSection>
-
                   <AgentSection mode="Creative">
                     <Name>MalmoTutorialBot</Name>
                     <AgentStart>
                         <Placement x="11" y="80" z="0.5" yaw="90"/>
-
     				<Inventory>
     					<InventoryItem slot="0" type="bow"/>
     					<InventoryItem slot="1" type="arrow" />
     				</Inventory>
-
                     </AgentStart>
                     <AgentHandlers>
                       <ObservationFromNearbyEntities>
@@ -128,20 +117,17 @@ medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
-                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
-
                     </AgentHandlers>
                   </AgentSection>
                 </Mission>'''
 
-hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+hard_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                   <About>
                         <Summary>Hello world!</Summary>
                   </About>
-
                 <ServerSection>
                   <ServerInitialConditions>
                     <Time>
@@ -163,24 +149,20 @@ hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
                           <DrawCuboid x1="-11" y1="78" z1="-4" x2="-3" y2="80" z2="4" type="glowstone"/>
                           <DrawCuboid x1="-10" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="air"/>
-                          <DrawCuboid x1="-3" y1="78" z1="-3" x2="-3" y2="78" z2="3" type="fence"/>
-                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
-                      </DrawingDecorator>
+                          <DrawCuboid x1="-3" y1="78" z1="-3" x2="-3" y2="78" z2="3" type="fence"/>'''
+hard_e='''</DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
                     </ServerHandlers>
                   </ServerSection>
-
                   <AgentSection mode="Creative">
                     <Name>MalmoTutorialBot</Name>
                     <AgentStart>
                         <Placement x="11" y="80" z="0.5" yaw="90"/>
-
     				<Inventory>
     					<InventoryItem slot="0" type="bow"/>
     					<InventoryItem slot="1" type="arrow" />
     				</Inventory>
-
                     </AgentStart>
                     <AgentHandlers>
                       <ObservationFromNearbyEntities>
@@ -195,10 +177,8 @@ hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
-                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
-
                     </AgentHandlers>
                   </AgentSection>
                 </Mission>'''
