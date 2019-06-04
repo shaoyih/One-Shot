@@ -45,6 +45,18 @@ class Shoot(object):
             n:      <int>    number of back steps to update (default = 1)
         """
         self.epsilon = 0.5 # chance of taking a random action instead of the best
+
+        # stats part
+        self.reward=[]
+        self.totalCount=0
+        self.totalOnTarget=0
+        
+        self.phasesTemp=0
+        self.pahsesOnTarget=[]
+
+        self.arrowAngleCount=dict()
+
+        ##QLearning varaibles
         self.q_table = {}
         self.loadTrainedData()
         self.n, self.alpha, self.gamma = n, alpha, gamma
@@ -139,6 +151,8 @@ class Shoot(object):
             A.popleft()
             R.popleft()
         agent_host.sendCommand('quit')
+
+    
 
     def loadTrainedData(self):
         path=os.path.dirname(os.path.abspath(__file__))
