@@ -45,6 +45,7 @@ class Shoot(object):
         """
         self.epsilon = 0.5 # chance of taking a random action instead of the best
         self.q_table = {}
+        self.loadTrainedData()
         self.n, self.alpha, self.gamma = n, alpha, gamma
 
     def launch(self,angle):
@@ -137,7 +138,63 @@ class Shoot(object):
             A.popleft()
             R.popleft()
         agent_host.sendCommand('quit')
+    
+    def loadTrainedData(self):
+        path=os.path.dirname(os.path.abspath(__file__))
+        if(os.path.isfile(path+"\\"+"qtable.json")):
+            with open(path+"\\"+"qtable.json",'r') as file:
+                data=json.load(file)
+                dicData=json.loads(data)
+                key=dicData.keys()
+                value=dicData.values()
+                k1=[eval(i) for i in key]
+                v1=[eval(i) for i in value]
+                self.q_table=dict(zip(*[k1,v1]))
+        print(self.q_table)
 
+    def writeData(self):
+        
+        with open('qtable.json','w') as outfile:
+            key=self.q_table.keys()
+            value=self.q_table.values()
+            strK=[str(i) for i in key]
+            strV=[str(i) for i in value]
+            json.dump(json.dumps(dict(zip(*[strK,strV]))),outfile)
+        
+def main():
+    num_reps = 30000
+    odie = Shoot(n=0)
+    try:
+        for iRepeat in range(num_reps):
+            my_mission = MalmoPython.MissionSpec(GetMissionXML('medium'), True)
+            my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
+            my_mission.setViewpoint(0)
+            max_retries = 3
+            for retry in range(max_retries):
+                try:
+                    # Attempt to start the mission:
+                    agent_host.startMission(my_mission, my_client_pool, my_mission_record, 0, "Odie")
+                    break
+                except RuntimeError as e:
+                    if retry == max_retries - 1:
+                        print("Error starting mission", e)
+                        print("Is the game running?")
+                        exit(1)
+                    else:
+                        time.sleep(2)
+    
+            world_state = agent_host.getWorldState()
+            while not world_state.has_mission_begun:
+                time.sleep(0.1)
+                world_state = agent_host.getWorldState()
+    
+            # Every few iteration Odie will show us the best policy that he learned.
+            odie.run(agent_host)
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("file saved")
+        odie.writeData()
+    
 life = 0
 if __name__ == '__main__':
     print('Starting...', flush=True)
@@ -153,32 +210,7 @@ if __name__ == '__main__':
     if agent_host.receivedArgument("help"):
         print(agent_host.getUsage())
         exit(0)
+        
+    main()
 
-    num_reps = 30000
-    odie = Shoot(n=0)
-    for iRepeat in range(num_reps):
-        my_mission = MalmoPython.MissionSpec(GetMissionXML('medium'), True)
-        my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
-        my_mission.setViewpoint(0)
-        max_retries = 3
-        for retry in range(max_retries):
-            try:
-                # Attempt to start the mission:
-                agent_host.startMission(my_mission, my_client_pool, my_mission_record, 0, "Odie")
-                break
-            except RuntimeError as e:
-                if retry == max_retries - 1:
-                    print("Error starting mission", e)
-                    print("Is the game running?")
-                    exit(1)
-                else:
-                    time.sleep(2)
-
-        world_state = agent_host.getWorldState()
-        while not world_state.has_mission_begun:
-            time.sleep(0.1)
-            world_state = agent_host.getWorldState()
-
-        # Every few iteration Odie will show us the best policy that he learned.
-        odie.run(agent_host)
-        time.sleep(1)
+    
