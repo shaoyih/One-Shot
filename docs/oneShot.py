@@ -14,11 +14,13 @@ import arena as mode
 from collections import defaultdict, deque
 from timeit import default_timer as timer
 
-yaw5=[79,81,83,85,87,89,91,93,95,97,99,101]
-pitch=[1,0,-1,-2,-3,-4,-5,-6,-7]
+h_yaw5=[77,79,81,83,85,87,89,91,93,95,97,99,101,103]
+m_yaw5=[81,83,85,87,89,91,93,95,97,99]
+e_yaw5=[86,88,90,92,94]
+pitch=[0,-1,-2,-3,-4,-5,-6]
 act=['shoot','hold']
 possible_actions = []
-for i in yaw5:
+for i in m_yaw5:
     for j in pitch:
         for k in act:
             possible_actions.append((i,j,k))
@@ -26,11 +28,11 @@ for i in yaw5:
 def GetMissionXML(stri):
     ''' arena's level is depending on the free moving area of zombie from easy(3x3) medium(5x5) hard(7x7)'''
     if stri == 'easy':
-        return mode.easy_h+'''<DrawEntity x="'''+str(random.randint(-6,-5)+0.5) + '''" y="80" z="''' + str(random.randint(0,1)-0.5) + '''" type="Zombie"/>''' + mode.easy_e
+        return mode.easy_h+'''<DrawEntity x="'''+str(random.randint(-6,-4)+0.5) + '''" y="80" z="''' + str(random.randint(-1,1)+0.5) + '''" type="Zombie"/>''' + mode.easy_e
     elif stri == 'medium':
-        return mode.medium_h + '''<DrawEntity x="''' + str(random.randint(-8,-5)+0.5) + '''" y="80" z="''' + str(random.randint(-1,2)-0.5) + '''" type="Zombie"/>''' + mode.medium_e
+        return mode.medium_h + '''<DrawEntity x="''' + str(random.randint(-8,-4)+0.5) + '''" y="80" z="''' + str(random.randint(-2,2)+0.5) + '''" type="Zombie"/>''' + mode.medium_e
     elif stri == 'hard':
-        return mode.hard_h + '''<DrawEntity x="''' + str(random.randint(-11,-5)+0.5) + '''" y="80" z="''' + str(random.randint(-2,3)-0.5) + '''" type="Zombie"/>''' + mode.hard_e
+        return mode.hard_h + '''<DrawEntity x="''' + str(random.randint(-10,-4)+0.5) + '''" y="80" z="''' + str(random.randint(-3,3)+0.5) + '''" type="Zombie"/>''' + mode.hard_e
     else:
         return 'error'
 
@@ -87,7 +89,7 @@ class Shoot(object):
         """
         rand = random.uniform(0,1)
         if rand < self.epsilon:
-            return (random.choice(yaw5),random.choice(pitch),random.choice(act))
+            return (random.choice(m_yaw5),random.choice(pitch),random.choice(act))
         else:
             angle = max(self.q_table[s0].items(), key=lambda x:x[1])[0]
         return angle
@@ -137,7 +139,7 @@ class Shoot(object):
             A.popleft()
             R.popleft()
         agent_host.sendCommand('quit')
-    
+
     def loadTrainedData(self):
         path=os.path.dirname(os.path.abspath(__file__))
         if(os.path.isfile(path+"\\"+"qtable.json")):
@@ -152,14 +154,14 @@ class Shoot(object):
         print(self.q_table)
 
     def writeData(self):
-        
+
         with open('qtable.json','w') as outfile:
             key=self.q_table.keys()
             value=self.q_table.values()
             strK=[str(i) for i in key]
             strV=[str(i) for i in value]
             json.dump(json.dumps(dict(zip(*[strK,strV]))),outfile)
-        
+
 def main():
     num_reps = 30000
     odie = Shoot(n=0)
@@ -181,19 +183,19 @@ def main():
                         exit(1)
                     else:
                         time.sleep(2)
-    
+
             world_state = agent_host.getWorldState()
             while not world_state.has_mission_begun:
                 time.sleep(0.1)
                 world_state = agent_host.getWorldState()
-    
+
             # Every few iteration Odie will show us the best policy that he learned.
             odie.run(agent_host)
             time.sleep(1)
     except KeyboardInterrupt:
         print("file saved")
         odie.writeData()
-    
+
 life = 0
 if __name__ == '__main__':
     print('Starting...', flush=True)
@@ -209,5 +211,5 @@ if __name__ == '__main__':
     if agent_host.receivedArgument("help"):
         print(agent_host.getUsage())
         exit(0)
-        
+
     main()
