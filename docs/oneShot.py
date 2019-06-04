@@ -44,7 +44,7 @@ class Shoot(object):
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.5 # chance of taking a random action instead of the best
+        self.epsilon = 0.8 # chance of taking a random action instead of the best
 
         # stats part
         
@@ -257,10 +257,12 @@ class Shoot(object):
         
 
 def main():
-    num_reps = 30000
+    num_reps = 60000
     odie = Shoot(n=0)
     try:
         for iRepeat in range(num_reps):
+            if num_reps > 20000:
+                odie.epsilon = 0.2
             ## update
             my_mission = MalmoPython.MissionSpec(GetMissionXML('medium'), True)
             my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
