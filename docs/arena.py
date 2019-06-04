@@ -1,14 +1,4 @@
-from builtins import range
-import random
 
-xe = str(random.randint(-6,-5)+0.5)
-ze = str(random.randint(0,1)-0.5)
-
-xm = str(random.randint(-8,-5)+0.5)
-zm = str(random.randint(-1,2)-0.5)
-
-xh = str(random.randint(-11,-5)+0.5)
-zh = str(random.randint(-2,3)-0.5)
 
 easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -38,7 +28,7 @@ easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-7" y1="78" z1="-2" x2="-4" y2="80" z2="2" type="glowstone"/>
                           <DrawCuboid x1="-6" y1="78" z1="-1" x2="-4" y2="80" z2="1" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="-1" x2="-3" y2="78" z2="1" type="fence"/>
-                          <DrawEntity x="''' + xe + '''" y="80" z="''' + ze + '''" type="Zombie"/>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
                       </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
@@ -107,7 +97,7 @@ medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-9" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="glowstone"/>
                           <DrawCuboid x1="-8" y1="78" z1="-2" x2="-3" y2="80" z2="2" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="2" type="fence"/>
-                          <DrawEntity x="''' + xm + '''" y="80" z="''' + zm + '''" type="Zombie"/>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
                       </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
@@ -174,7 +164,7 @@ hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-11" y1="78" z1="-4" x2="-3" y2="80" z2="4" type="glowstone"/>
                           <DrawCuboid x1="-10" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="-3" x2="-3" y2="78" z2="3" type="fence"/>
-                          <DrawEntity x="''' + xh + '''" y="80" z="''' + zh + '''" type="Zombie"/>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
                       </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
