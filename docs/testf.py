@@ -30,6 +30,8 @@ import time
 import json
 import random
 
+
+
 if sys.version_info[0] == 2:
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
 else:
@@ -60,7 +62,11 @@ def GenCuboid(x1, y1, z1, x2, y2, z2, blocktype):
 
 def GenCuboidWithVariant(x1, y1, z1, x2, y2, z2, blocktype, variant):
     return '<DrawCuboid x1="' + str(x1) + '" y1="' + str(y1) + '" z1="' + str(z1) + '" x2="' + str(x2) + '" y2="' + str(y2) + '" z2="' + str(z2) + '" type="' + blocktype + '" variant="' + variant + '"/>'
-    
+
+x = str(random.randint(-11,-4))
+z = str(random.randint(-3,3))
+
+
 missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
             <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
               <About>
@@ -78,18 +84,18 @@ missionXML='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
               <ServerHandlers>
                   <FlatWorldGenerator generatorString="3;7,44*49,73,35:1,159:4,95:13,35:13,159:11,95:10,159:14,159:6,35:6,95:6;12;"/>
                   <DrawingDecorator>
-                      <DrawCuboid x1="-14" y1="74" z1="-11" x2="17" y2="77" z2="11" type="diamond_block"/>
-                      <DrawCuboid x1="-2" y1="74" z1="-11" x2="0" y2="77" z2="11" type="air"/>
-                      <DrawCuboid x1="16" y1="77" z1="-10" x2="16" y2="77" z2="10" type="beacon"/>
-                      <DrawCuboid x1="2" y1="77" z1="-10" x2="16" y2="77" z2="-10" type="beacon"/>
-                      <DrawCuboid x1="2" y1="77" z1="10" x2="16" y2="77" z2="10" type="beacon"/>
-                      <DrawCuboid x1="-13" y1="77" z1="-10" x2="-13" y2="77" z2="10" type="beacon"/>
-                      <DrawCuboid x1="-13" y1="77" z1="-10" x2="-4" y2="77" z2="-10" type="beacon"/>
-                      <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
-                      <DrawCuboid x1="-6" y1="78" z1="-2" x2="-4" y2="80" z2="1" type="glowstone"/>
-                      <DrawCuboid x1="-5" y1="78" z1="-1" x2="-4" y2="80" z2="0" type="air"/>
-                      <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="1" type="fence"/>
-                      <DrawEntity x="-4" y="80" z="0" type="Zombie"/>
+                        <DrawCuboid x1="-14" y1="74" z1="-11" x2="17" y2="77" z2="11" type="diamond_block"/>
+                        <DrawCuboid x1="-2" y1="74" z1="-11" x2="0" y2="77" z2="11" type="air"/>
+                        <DrawCuboid x1="16" y1="77" z1="-10" x2="16" y2="77" z2="10" type="beacon"/>
+                        <DrawCuboid x1="2" y1="77" z1="-10" x2="16" y2="77" z2="-10" type="beacon"/>
+                        <DrawCuboid x1="2" y1="77" z1="10" x2="16" y2="77" z2="10" type="beacon"/>
+                        <DrawCuboid x1="-13" y1="77" z1="-10" x2="-13" y2="77" z2="10" type="beacon"/>
+                        <DrawCuboid x1="-13" y1="77" z1="-10" x2="-4" y2="77" z2="-10" type="beacon"/>
+                        <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
+                        <DrawCuboid x1="-11" y1="78" z1="-4" x2="-3" y2="80" z2="4" type="glowstone"/>
+                        <DrawCuboid x1="-10" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="air"/>
+                        <DrawCuboid x1="-3" y1="78" z1="-3" x2="-3" y2="78" z2="3" type="fence"/>
+                        <DrawEntity x="''' + x + '''" y="80" z="''' + z + '''" type="Zombie"/>
                   </DrawingDecorator>
                   <ServerQuitFromTimeUp timeLimitMs="20000"/>
                   <ServerQuitWhenAnyAgentFinishes/>
@@ -175,7 +181,7 @@ if agent_host.receivedArgument("help"):
     print(agent_host.getUsage())
     exit(0)
 
-my_mission = MalmoPython.MissionSpec(missionXML, True)
+my_mission = MalmoPython.MissionSpec(missionXML, False)
 my_mission_record = MalmoPython.MissionRecordSpec()
 
 # Attempt to start a mission:
@@ -205,6 +211,8 @@ print()
 print("Mission running ", end=' ')
 
 # ADD YOUR CODE HERE
+print("x = ",x)
+print("z = ",z)
 # TO GET YOUR AGENT TO THE DIAMOND BLOCK
 target_name = "Zombie"
 trace_target_life = 2000

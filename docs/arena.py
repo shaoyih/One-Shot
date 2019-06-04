@@ -1,7 +1,6 @@
-from builtins import range
-import random
 
-easy_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+easy='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                   <About>
                         <Summary>Hello world!</Summary>
@@ -29,8 +28,8 @@ easy_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-7" y1="78" z1="-2" x2="-4" y2="80" z2="2" type="glowstone"/>
                           <DrawCuboid x1="-6" y1="78" z1="-1" x2="-4" y2="80" z2="1" type="air"/>
                           <DrawCuboid x1="-3" y1="78" z1="-1" x2="-3" y2="78" z2="1" type="fence"/>
-                          '''
-easy_e = '''</DrawingDecorator>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
+                      </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
                     </ServerHandlers>
@@ -60,15 +59,17 @@ easy_e = '''</DrawingDecorator>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
+                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
+                      
 
                     </AgentHandlers>
                   </AgentSection>
                 </Mission>'''
 
 
-medium_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+medium='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                   <About>
                         <Summary>Hello world!</Summary>
@@ -95,8 +96,9 @@ medium_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
                           <DrawCuboid x1="-9" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="glowstone"/>
                           <DrawCuboid x1="-8" y1="78" z1="-2" x2="-3" y2="80" z2="2" type="air"/>
-                          <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="2" type="fence"/>'''
-medium_e = '''</DrawingDecorator>
+                          <DrawCuboid x1="-3" y1="78" z1="-2" x2="-3" y2="78" z2="2" type="fence"/>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
+                      </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
                     </ServerHandlers>
@@ -126,6 +128,7 @@ medium_e = '''</DrawingDecorator>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
+                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
 
@@ -133,7 +136,7 @@ medium_e = '''</DrawingDecorator>
                   </AgentSection>
                 </Mission>'''
 
-hard_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+hard='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                   <About>
                         <Summary>Hello world!</Summary>
@@ -160,8 +163,9 @@ hard_h='''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                           <DrawCuboid x1="-13" y1="77" z1="10" x2="-4" y2="77" z2="10" type="beacon"/>
                           <DrawCuboid x1="-11" y1="78" z1="-4" x2="-3" y2="80" z2="4" type="glowstone"/>
                           <DrawCuboid x1="-10" y1="78" z1="-3" x2="-3" y2="80" z2="3" type="air"/>
-                          <DrawCuboid x1="-3" y1="78" z1="-3" x2="-3" y2="78" z2="3" type="fence"/>'''
-hard_e='''</DrawingDecorator>
+                          <DrawCuboid x1="-3" y1="78" z1="-3" x2="-3" y2="78" z2="3" type="fence"/>
+                          <DrawEntity x="-4" y="80" z="0.5" type="Zombie"/>
+                      </DrawingDecorator>
                       <ServerQuitFromTimeUp timeLimitMs="200000"/>
                       <ServerQuitWhenAnyAgentFinishes/>
                     </ServerHandlers>
@@ -191,6 +195,7 @@ hard_e='''</DrawingDecorator>
                       </ObservationFromGrid>
                       <AbsoluteMovementCommands/>
                       <ContinuousMovementCommands turnSpeedDegs="180"/>
+                      <AbsoluteMovementCommands/>
                       <MissionQuitCommands/>
                       <InventoryCommands/>
 
