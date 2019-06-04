@@ -47,9 +47,12 @@ class Shoot(object):
         self.epsilon = 0.5 # chance of taking a random action instead of the best
 
         # stats part
+        
         self.reward=[]
         self.totalCount=0
         self.totalOnTarget=0
+        self.shootCount=0
+        
         
         self.phasesTemp=0
         self.phasesOnTarget=[]
@@ -138,14 +141,43 @@ class Shoot(object):
         S, A, R = deque(), deque(), deque()
         shot = 0
         while shot < 5:
+            ##update total arrow shot
+            self.totalCount+=1
+
+            ##update accuracy number for every 10000 arrows
+            if(self.totalCount%10000==0):
+                self.phasesOnTarget.append(self.phasesTemp)
+                self.phasesTemp=0
+            
+            
             s0 = self.get_zombie_state(agent_host)
             a0= self.choose_action(s0)
             if a0[2] == 'shoot':
                 shot += 1
+                self.shootCount+=1
             r0 = self.act(agent_host, a0)
+            
+            ##update arrow numbers for different angles
+            if(a0[2]=='shoot'):
+                self.arrowAngleCount[tuple((a0[0],a0[1]))]+=1
+
+            ##update arrow on target quantity
+            if(r0>0):
+                self.totalOnTarget+=1
+                self.phasesTemp+=1
+
+            ## update arrow hit the target on different angles
+                if(a0[2]=='shoot'):
+                    self.arrowAngleOn[tuple((a0[0],a0[1]))]+=1
+                
+
+            ##update reward
             S.append(s0)
             A.append(a0)
             R.append(r0)
+
+            ##update reward list
+            self.reward.append(r0)
             print(s0,a0,r0)
         while len(S) >= 1:
             self.update_q_table(S, A, R)
@@ -167,7 +199,7 @@ class Shoot(object):
                 k1=[eval(i) for i in key]
                 v1=[eval(i) for i in value]
                 self.q_table=dict(zip(*[k1,v1]))
-        print(self.q_table)
+        
 
     def writeData(self):
 
@@ -187,6 +219,7 @@ class Shoot(object):
                 self.totalCount=tempDict["totalCount"]
                 self.totalOnTarget=tempDict["totalOnTarget"]
                 self.phasesTemp=tempDict["phasesTemp"]
+                self.shootCount=tempDict["shootCount"]
                 self.phasesOnTarget=tempDict["phasesOnTarget"]
                 self.arrowAngleCount=eval(tempDict["arrowAngleCount"])
                 self.arrowAngleOn=eval(tempDict["arrowAngleOn"])
@@ -200,6 +233,7 @@ class Shoot(object):
                 "totalOnTarget":self.totalOnTarget,
                "phasesTemp":self.phasesTemp,
                 "phasesOnTarget":self.phasesOnTarget,
+                "shootCount":self.shootCount,               
                 "arrowAngleCount":str(self.arrowAngleCount),
                 "arrowAngleOn":str(self.arrowAngleOn)
                }
@@ -227,6 +261,7 @@ def main():
     odie = Shoot(n=0)
     try:
         for iRepeat in range(num_reps):
+            ## update
             my_mission = MalmoPython.MissionSpec(GetMissionXML('medium'), True)
             my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
             my_mission.setViewpoint(0)
