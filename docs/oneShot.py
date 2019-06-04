@@ -164,10 +164,12 @@ class Shoot(object):
             json.dump(json.dumps(dict(zip(*[strK,strV]))),outfile)
 
 def main():
-    num_reps = 30000
+    num_reps = 60000
     odie = Shoot(n=0)
     try:
         for iRepeat in range(num_reps):
+            if num_reps > 20000:
+                odie.epsilon = 0.2
             my_mission = MalmoPython.MissionSpec(GetMissionXML('medium'), True)
             my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
             my_mission.setViewpoint(0)
