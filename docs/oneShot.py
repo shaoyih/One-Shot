@@ -52,9 +52,11 @@ class Shoot(object):
         self.totalOnTarget=0
         
         self.phasesTemp=0
-        self.pahsesOnTarget=[]
+        self.phasesOnTarget=[]
 
         self.arrowAngleCount=dict()
+        self.arrowAngleOn=dict()
+        self.loadStats()
 
         ##QLearning varaibles
         self.q_table = {}
@@ -176,6 +178,50 @@ class Shoot(object):
             strV=[str(i) for i in value]
             json.dump(json.dumps(dict(zip(*[strK,strV]))),outfile)
 
+    def loadStats(self):
+        path=os.path.dirname(os.path.abspath(__file__))
+        if(os.path.isfile(path+"\\"+"stats.json")):
+            with open(path+"\\"+"stats.json",'r') as file:
+                tempDict=json.load(file)
+                self.reward=tempDict["reward"]
+                self.totalCount=tempDict["totalCount"]
+                self.totalOnTarget=tempDict["totalOnTarget"]
+                self.phasesTemp=tempDict["phasesTemp"]
+                self.phasesOnTarget=tempDict["phasesOnTarget"]
+                self.arrowAngleCount=eval(tempDict["arrowAngleCount"])
+                self.arrowAngleOn=eval(tempDict["arrowAngleOn"])
+        else:
+            self.getArrowAngle()
+            
+        
+    def writeStats(self):
+        stats={"reward":self.reward,
+                "totalCount":self.totalCount,
+                "totalOnTarget":self.totalOnTarget,
+               "phasesTemp":self.phasesTemp,
+                "phasesOnTarget":self.phasesOnTarget,
+                "arrowAngleCount":str(self.arrowAngleCount),
+                "arrowAngleOn":str(self.arrowAngleOn)
+               }
+        
+        with open("stats.json",'w') as OF:
+             json.dump(stats, OF)
+            
+        
+            
+
+    def getArrowAngle(self):
+        angleDict=dict()
+        angleDict2=dict()
+        for i in m_yaw5:
+            for j in pitch:
+                angleDict[tuple((i,j))]=0
+                angleDict2[tuple((i,j))]=0
+        self.arrowAngleCount=angleDict
+        self.arrowAngleOn=angleDict2
+                    
+        
+
 def main():
     num_reps = 30000
     odie = Shoot(n=0)
@@ -209,6 +255,7 @@ def main():
     except KeyboardInterrupt:
         print("file saved")
         odie.writeData()
+        odie.writeStats()
 
 life = 0
 if __name__ == '__main__':
