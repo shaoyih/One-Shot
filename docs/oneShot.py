@@ -14,18 +14,27 @@ import arena as mode
 from collections import defaultdict, deque
 from timeit import default_timer as timer
 
-yaw5=[79,81,83,85,87,89,91,93,95,97,99,101]
-pitch=[1,0,-1,-2,-3,-4,-5,-6,-7]
+h_yaw5=[77,79,81,83,85,87,89,91,93,95,97,99,101,103]
+m_yaw5=[81,83,85,87,89,91,93,95,97,99]
+e_yaw5=[86,88,90,92,94]
+pitch=[0,-1,-2,-3,-4,-5,-6]
 act=['shoot','hold']
 possible_actions = []
-for i in yaw5:
+for i in m_yaw5:
     for j in pitch:
         for k in act:
             possible_actions.append((i,j,k))
 
-def GetMissionXML():
+def GetMissionXML(stri):
     ''' arena's level is depending on the free moving area of zombie from easy(3x3) medium(5x5) hard(7x7)'''
-    return mode.medium
+    if stri == 'easy':
+        return mode.easy_h+'''<DrawEntity x="'''+str(random.randint(-6,-4)+0.5) + '''" y="80" z="''' + str(random.randint(-1,1)+0.5) + '''" type="Zombie"/>''' + mode.easy_e
+    elif stri == 'medium':
+        return mode.medium_h + '''<DrawEntity x="''' + str(random.randint(-8,-4)+0.5) + '''" y="80" z="''' + str(random.randint(-2,2)+0.5) + '''" type="Zombie"/>''' + mode.medium_e
+    elif stri == 'hard':
+        return mode.hard_h + '''<DrawEntity x="''' + str(random.randint(-10,-4)+0.5) + '''" y="80" z="''' + str(random.randint(-3,3)+0.5) + '''" type="Zombie"/>''' + mode.hard_e
+    else:
+        return 'error'
 
 class Shoot(object):
     def __init__(self, alpha = 0.5, gamma=0.1, n=1):
@@ -36,8 +45,9 @@ class Shoot(object):
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.4 # chance of taking a random action instead of the best
+        self.epsilon = 0.5 # chance of taking a random action instead of the best
         self.q_table = {}
+        self.loadTrainedData()
         self.n, self.alpha, self.gamma = n, alpha, gamma
 
     def launch(self,angle):
@@ -80,7 +90,7 @@ class Shoot(object):
         """
         rand = random.uniform(0,1)
         if rand < self.epsilon:
-            return (random.choice(yaw5),random.choice(pitch),random.choice(act))
+            return (random.choice(m_yaw5),random.choice(pitch),random.choice(act))
         else:
             angle = max(self.q_table[s0].items(), key=lambda x:x[1])[0]
         return angle
@@ -205,31 +215,4 @@ if __name__ == '__main__':
         print(agent_host.getUsage())
         exit(0)
 
-    num_reps = 30000
-    odie = Shoot(n=0)
-    for iRepeat in range(num_reps):
-        my_mission = MalmoPython.MissionSpec(GetMissionXML(), True)
-        my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
-        my_mission.setViewpoint(0)
-        max_retries = 3
-        for retry in range(max_retries):
-            try:
-                # Attempt to start the mission:
-                agent_host.startMission(my_mission, my_client_pool, my_mission_record, 0, "Odie")
-                break
-            except RuntimeError as e:
-                if retry == max_retries - 1:
-                    print("Error starting mission", e)
-                    print("Is the game running?")
-                    exit(1)
-                else:
-                    time.sleep(2)
-
-        world_state = agent_host.getWorldState()
-        while not world_state.has_mission_begun:
-            time.sleep(0.1)
-            world_state = agent_host.getWorldState()
-
-        # Every few iteration Odie will show us the best policy that he learned.
-        odie.run(agent_host)
-        time.sleep(1)
+    main()
