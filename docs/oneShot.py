@@ -17,7 +17,7 @@ from timeit import default_timer as timer
 h_yaw5=[77,79,81,83,85,87,89,91,93,95,97,99,101,103]
 m_yaw5=[81,83,85,87,89,91,93,95,97,99]
 e_yaw5=[86,88,90,92,94]
-pitch=[0,-1,-2,-3,-4,-5,-6]
+pitch=[0,-1,-2,-3,-4,-5]
 act=['shoot','hold']
 possible_actions = []
 for i in m_yaw5:
