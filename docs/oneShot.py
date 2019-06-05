@@ -37,7 +37,7 @@ def GetMissionXML(stri):
         return 'error'
 
 class Shoot(object):
-    def __init__(self, alpha = 0.5, gamma=0.1, n=1):
+    def __init__(self, alpha = 0.4, gamma=0.1, n=1):
         """Constructing an RL agent.
         Args
             alpha:  <float>  learning rate      (default = 0.3)
@@ -119,15 +119,19 @@ class Shoot(object):
         time.sleep(0.3)
         world_state = agent_host.getWorldState()
         for x in world_state.observations:
-            for y in json.loads(x.text).get('entities'):
+            entities=json.loads(x.text).get('entities')
+            if(entities[1]["name"]!="Zombie"):
+                return 100-5
+            for y in entities:
                 if "Zombie" in y['name']:
                     target_life = y['life']
                     if life - target_life > 0:
-                        return 20-5
+                        return 20-3
                     else:
                         return -10-5
+                
         agent_host.sendCommand('quit')
-        return 100-5
+        
 
     def update_q_table(self, S, A, R):
         curr_s, curr_a, curr_r = S[0], A[0], R[0]
@@ -210,6 +214,16 @@ class Shoot(object):
             strV=[str(i) for i in value]
             json.dump(json.dumps(dict(zip(*[strK,strV]))),outfile)
 
+
+    def recordData(self,num):
+
+        with open('qtable'+str(num)+'.json','w') as outfile:
+            key=self.q_table.keys()
+            value=self.q_table.values()
+            strK=[str(i) for i in key]
+            strV=[str(i) for i in value]
+            json.dump(json.dumps(dict(zip(*[strK,strV]))),outfile)
+
     def loadStats(self):
         path=os.path.dirname(os.path.abspath(__file__))
         if(os.path.isfile(path+"\\"+"stats.json")):
@@ -261,9 +275,11 @@ def main():
     odie = Shoot(n=0)
     try:
         for iRepeat in range(num_reps):
-            if num_reps > 20000:
-                odie.epsilon = 0.2
             ## update
+            if(iRepeat%1000==0):
+                odie.recordData(iRepeat)
+                odie.writeData()
+                odie.writeStats()
             my_mission = MalmoPython.MissionSpec(GetMissionXML('medium'), True)
             my_mission_record = MalmoPython.MissionRecordSpec()  # Records nothing by default
             my_mission.setViewpoint(0)
@@ -293,6 +309,11 @@ def main():
         print("file saved")
         odie.writeData()
         odie.writeStats()
+    except:
+        print("file saved")
+        odie.writeData()
+        odie.writeStats()
+
 
 life = 0
 if __name__ == '__main__':
