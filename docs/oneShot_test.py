@@ -17,7 +17,7 @@ from timeit import default_timer as timer
 h_yaw5=[77,79,81,83,85,87,89,91,93,95,97,99,101,103]
 m_yaw5=[81,83,85,87,89,91,93,95,97,99]
 e_yaw5=[86,88,90,92,94]
-pitch=[0,-1,-2,-3,-4]
+pitch=[0,-1,-2,-3,-4,-5]
 act=['shoot','hold']
 possible_actions = []
 for i in m_yaw5:
@@ -44,7 +44,7 @@ class Shoot(object):
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.2 # chance of taking a random action instead of the best
+        self.epsilon = 0.4 # chance of taking a random action instead of the best
 
         # stats part
 
@@ -284,8 +284,6 @@ def main():
     try:
         for iRepeat in range(num_reps):
             print("session:",iRepeat)
-            if( iRepeat > 2000 ):
-                odie.epsilon = 0.4
             ## update
             if(iRepeat%1000==0):
                 odie.recordData(iRepeat)
