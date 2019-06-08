@@ -194,7 +194,7 @@ class Shoot(object):
 
     def loadTrainedData(self):
         path=os.path.dirname(os.path.abspath(__file__))
-        if(os.path.isfile(path+"\\"+"qtable.json")):
+        if(os.path.isfile(path+"\\"+"qtable-1.json")):
             with open(path+"\\"+"qtable.json",'r') as file:
                 data=json.load(file)
                 dicData=json.loads(data)
@@ -207,7 +207,7 @@ class Shoot(object):
 
     def writeData(self):
 
-        with open('qtable.json','w') as outfile:
+        with open('qtable-1.json','w') as outfile:
             key=self.q_table.keys()
             value=self.q_table.values()
             strK=[str(i) for i in key]

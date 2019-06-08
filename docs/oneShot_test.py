@@ -37,14 +37,14 @@ def GetMissionXML(stri):
         return 'error'
 
 class Shoot(object):
-    def __init__(self, alpha = 0.5, gamma=0.1, n=1):
+    def __init__(self, alpha = 0.4, gamma=0.2, n=1):
         """Constructing an RL agent.
         Args
             alpha:  <float>  learning rate      (default = 0.3)
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.4 # chance of taking a random action instead of the best
+        self.epsilon = 0.5 # chance of taking a random action instead of the best
 
         # stats part
 
@@ -97,18 +97,18 @@ class Shoot(object):
     def choose_action(self, s0):
         if s0 not in self.q_table:
             self.q_table[s0] = {}
-        for action in possible_actions:
-            if action not in self.q_table[s0]:
-                self.q_table[s0][action] = 0
+            for action in possible_actions:
+                if action not in self.q_table[s0]:
+                    self.q_table[s0][action] = 0
         """
         return pitch & angle
         """
         rand = random.uniform(0,1)
         if rand < self.epsilon:
-            print("random")
+            print("random", end=" ")
             return (random.choice(m_yaw5),random.choice(pitch),random.choice(act))
         else:
-            print("qt")
+            print("qt",end=" ")
             angle = max(self.q_table[s0].items(), key=lambda x:x[1])[0]
         return angle
 
@@ -140,10 +140,28 @@ class Shoot(object):
 
     def update_q_table(self, S, A, R):
         curr_s, curr_a, curr_r = S[0], A[0], R[0]
-        G = sum([self.gamma ** i * R[i] for i in range(len(S))])
         old_q = self.q_table[curr_s][curr_a]
-        self.q_table[curr_s][curr_a] = old_q + self.alpha * (G - old_q)
-        print("state:",curr_s,"action:",curr_a,"reward:",self.q_table[curr_s][curr_a])
+        if(curr_s!=None):
+            if(curr_r>0):
+                G = sum([self.gamma ** i * R[i] for i in range(len(S))])
+                self.q_table[curr_s][curr_a] = old_q + self.alpha * (G - old_q)
+                print("state:",curr_s,"action:",curr_a,"reward:",self.q_table[curr_s][curr_a])
+            else:
+                ##hold and not hit the target, increase the value of the action angle twoard this angle, and q learning based on the next state that changed by zombie
+                nextState=tuple((curr_s[0]+curr_s[2],curr_s[1]+curr_s[3],0,0))
+                if nextState not in self.q_table:
+                    self.q_table[nextState] = {}
+                    for action in possible_actions:
+                        if action not in self.q_table[nextState]:
+                            self.q_table[nextState][action] = 0
+                ## deal with the case that didn't hit the target
+                self.q_table[curr_s][curr_a]=old_q+self.alpha*(curr_r+self.gamma*max(self.q_table[nextState].items(), key=lambda x:x[1])[1]-old_q)
+                ## increase the value of hold in this angle, use 3 as the reward for hold on this angle comparing with shoot
+                temp=list(curr_a)
+                temp[2]="hold"
+                curr_a=tuple(temp)
+                self.q_table[curr_s][curr_a]=old_q+self.alpha*(3+self.gamma*max(self.q_table[nextState].items(), key=lambda x:x[1])[1]-old_q)
+                
 
     def run(self, agent_host):
         """Learns the process to kill the mob in fewest shot. """
@@ -285,7 +303,7 @@ def main():
         for iRepeat in range(num_reps):
             print("session:",iRepeat)
             ## update
-            if(iRepeat%1000==0):
+            if(iRepeat%100==0):
                 odie.recordData(iRepeat)
                 odie.writeData()
                 odie.writeStats()
@@ -324,6 +342,7 @@ def main():
         print("file saved")
         odie.writeData()
         odie.writeStats()
+
 
 
 life = 0
