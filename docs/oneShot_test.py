@@ -44,7 +44,7 @@ class Shoot(object):
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.5 # chance of taking a random action instead of the best
+        self.epsilon = 0.3 # chance of taking a random action instead of the best
 
         # stats part
 
@@ -243,7 +243,7 @@ class Shoot(object):
 
     def recordData(self,num):
 
-        with open('qtable'+str(num)+'.json','w') as outfile:
+        with open('qtable'+str(num+1)+'.json','w') as outfile:
             key=self.q_table.keys()
             value=self.q_table.values()
             strK=[str(i) for i in key]
