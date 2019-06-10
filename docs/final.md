@@ -45,7 +45,7 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   
 
-  <img src="images/s4.png">
+  <img src="images/s4.png" width=700>
 
   ​					(This is the two motion direction that zombie can made)
 
@@ -55,7 +55,7 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   - Easy: is that mode that Mob will trapped into a ***3x3*** closed area. (81 States)
 
-    <img src="images/s1.png">
+    <img src="images/s1.png" width=700>
 
   <br />
 
@@ -63,7 +63,7 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   - Medium: is that mode that Mob will trapped into a ***5x5*** closed area.(225 States) ***Current mode we trained***
 
-    <img src="images/s2.png">
+    <img src="images/s2.png" width=700>
 
   
 
@@ -71,7 +71,7 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   - Hard:is that mode that Mob will trapped into a ***7x7*** closed area.(441 States)
 
-    <img src="images/s3.png">
+    <img src="images/s3.png" width=700>
 
   <br />
 
@@ -102,7 +102,7 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   
 
-  <img src="images/a1.png">
+  <img src="images/a1.png" width=800>
 
   ​			(This the vertical degrees we can choose for  three different modes)
 
@@ -129,7 +129,7 @@ The ways of states transfer decides the value that will be used in the formula m
 2. ***States changed by agent***
    In this case, the states will only change based on the precondition that agent hit the target. Every time, when mob hit by an arrow, he will retreat one or less than one block to the opposite direction of the arrow goes to. This state transfer way is really hard to measure its updated state immediately. Indeed, we set 5 arrows as one round.  if the target hit by agent then the reward will follow the current reward + rest 4 arrows' reward  times gamma(discount factor) with power (the difference of index of current arrow and other arrows)  because further arrows has less effect than current arrow. Indeed we will follow the formula above as form of ***(1-alpha) x Old Q-value + alpha(current reward + gamma x reward for next arrow we generated + gamma ^2 x reward for next  next arrow we generated+ ...)*** .
 
-   <img src="images/sc1.gif">
+   <img src="images/sc1.gif" width=700>
 
    The image shows that Mob will move backward after hit by the arrow.
 
