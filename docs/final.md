@@ -45,11 +45,33 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   
 
+  <img src="images/s4.png">
+
+  ​					(This is the two motion direction that zombie can made)
+
+  <br />
+
+  
+
   - Easy: is that mode that Mob will trapped into a ***3x3*** closed area. (81 States)
+
+    <img src="images/s1.png">
+
+  <br />
+
+  
 
   - Medium: is that mode that Mob will trapped into a ***5x5*** closed area.(225 States) ***Current mode we trained***
 
+    <img src="images/s2.png">
+
+  
+
+  <br />
+
   - Hard:is that mode that Mob will trapped into a ***7x7*** closed area.(441 States)
+
+    <img src="images/s3.png">
 
   <br />
 
@@ -60,19 +82,23 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
   ​	
 
 
-  - Easy: yaw5=[86,88,90,92,94]     pitch=[0,-1,-2,-3,-4,-5]     (total choices: 5x6x2=60)
+  - ***Easy:*** yaw5=[86,88,90,92,94]     pitch=[0,-1,-2,-3,-4,-5]     (total choices: 5x6x2=60)
 
-    <img src="images/a2.jpg">
+    <img src="images/a2.jpg" width="400">
 
-    
+    ​								(vertical angles for easy mode)
 
-  - Medium:  yaw5=[81,83,85,87,89,91,93,95,97,99] pitch=[0,-1,-2,-3,-4,-5] (total choices: 10x6x2=120) ***Current mode we trained***
+  - ***Medium:***  yaw5=[81,83,85,87,89,91,93,95,97,99] pitch=[0,-1,-2,-3,-4,-5] (total choices: 10x6x2=120) ***Current mode we trained***
 
-    <img src="images/a3.jpg">
+    <img src="images/a3.jpg" width="400">
 
-  - Hard: yaw5=[77,79,81,83,85,87,89,91,93,95,97,99,101,103] pitch=[0,-1,-2,-3,-4,-5] (total choices: 14x6x2=168)
+    ​						  	(vertical angles for Medium mode)
 
-    <img src="images/a4.jpg">
+  - ***Hard:*** yaw5=[77,79,81,83,85,87,89,91,93,95,97,99,101,103] pitch=[0,-1,-2,-3,-4,-5] (total choices: 14x6x2=168)
+
+    <img src="images/a4.jpg" width="400">
+
+    ​							        (vertical angles for Hard mode)
 
   
 
@@ -116,13 +142,13 @@ The way of states transfer decides the way of reward given to each state and act
 
 The reward given is based on the blood difference of Mob. 
 
-If the action didn't hit the target reward will be -15.
+If the action didn't hit the target reward will be ***-15***.
 
-if the action hit the target reward will be 17.
+if the action hit the target reward will be ***17***.
 
-if the action kill the target reward will be 95
+if the action kill the target reward will be ***95***
 
-if the action is hold, reward will be 0.
+if the action is hold, reward will be ***0***.
 
 <br />
 
@@ -137,15 +163,73 @@ Q-table is stored in a JSon file called q-table, which can be used for further l
 
 ## Evaluation
 
-## accuracy
+### accuracy
 
-<img>
+We calculated accuracy based on the arrow that hit the target and the total arrows we shoot.
 
-## Remaining goals and challenges
+<img src="images/e21.png" width="500">
 
-### Final Goal
+adfafwefqwe
 
-### Challenge
+<img src="images/e22.png" width="400">
+
+<img src="images/e23.png" width="400">
+
+<img src="images/e24.png" width="400">
+
+
+
+<br />
+
+### Hold VS. Shoot
+
+<img src="images/e31.png" width="400">
+
+
+
+<br />
+
+### reward
+
+<br />
+
+<img src="images/e1.png">
+
+<br />
+
+<img src="images/e2.png">
+
+<br />
+
+<img src="images/e3.png">
+
+
+
+<br />
+
+### heatmap arrows shoot on different angles
+
+
+
+<img src="images/e41.png" >
+
+
+
+<img src="images/e42.png" >
+
+
+
+<img src="images/e43.png" >
+
+
+
+### <br />
+
+## Reference
+
+
+
+https://matplotlib.org/3.1.0/gallery/images_contours_and_fields/image_annotated_heatmap.html
 
 
 
