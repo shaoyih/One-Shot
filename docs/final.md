@@ -1,6 +1,6 @@
 
 
-Project summary
+## Project summary
 
 ​		Our team topic is doing archery. More specifically, we want to teach our agent to kill the Mob using bow and arrows. Mob will be placed into a closed area  we created, and our agent will stand on a fixed block to learn its archery skill.  Each action made by agent is based on Mob’s current position and moving directions. When each round over, record will be updated so that system would always return the best result. Our final goal is to kill the Mob using the fewest arrows (3 shots). 
 
@@ -45,7 +45,7 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   There are four variables in our state definition. Variables z and x represent the position of mob at z and x direction. Variables z_motion and value x_motion represent the moving forward or backward of the mob at z and x direction. We round the z, x value to be its nearest integer value because our target only takes one block area. There are 3 values for z_motion and x_motion which represents moving forwards(1), standstill(0) and moving backwards(-1). The states numbers of our project are 441, 225, 81 which represents our 3 different environment setting(easy, medium, hard).  
 
-  <img src="images/s4.png" width=500>
+<img src="images/s4.png" width=500>
 
   ​					(This is the two motion direction that zombie can made)
 
@@ -53,19 +53,22 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   
 
-  - Easy: is that mode that Mob will trapped into a ***3x3*** closed area. (81 States)<img src="images/s1.png" width=500>
+  - Easy: is that mode that Mob will trapped into a ***3x3*** closed area. (81 States)
+<img src="images/s1.png" width=500>
 
   <br />
 
   
 
-  - Medium: is that mode that Mob will trapped into a ***5x5*** closed area.(225 States) ***Current mode we trained***<img src="images/s2.png" width=500>
+  - Medium: is that mode that Mob will trapped into a ***5x5*** closed area.(225 States) ***Current mode we trained***
+<img src="images/s2.png" width=500>
 
   
 
   <br />
 
-  - Hard:is that mode that Mob will trapped into a ***7x7*** closed area.(441 States)<img src="images/s3.png" width=500>
+  - Hard:is that mode that Mob will trapped into a ***7x7*** closed area.(441 States)
+<img src="images/s3.png" width=500>
 
   <br />
 
