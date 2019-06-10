@@ -129,6 +129,10 @@ The ways of states transfer decides the value that will be used in the formula m
 2. ***States changed by agent***
    In this case, the states will only change based on the precondition that agent hit the target. Every time, when mob hit by an arrow, he will retreat one or less than one block to the opposite direction of the arrow goes to. This state transfer way is really hard to measure its updated state immediately. Indeed, we set 5 arrows as one round.  if the target hit by agent then the reward will follow the current reward + rest 4 arrows' reward  times gamma(discount factor) with power (the difference of index of current arrow and other arrows)  because further arrows has less effect than current arrow. Indeed we will follow the formula above as form of ***(1-alpha) x Old Q-value + alpha(current reward + gamma x reward for next arrow we generated + gamma ^2 x reward for next  next arrow we generated+ ...)*** .
 
+   <img src="images/sc1.gif">
+
+   The image shows that Mob will move backward after hit by the arrow.
+
    
 
 <br />
@@ -279,7 +283,7 @@ Overall the agent reaches our expectation of learning, since the task in some wa
 
 https://matplotlib.org/3.1.0/gallery/images_contours_and_fields/image_annotated_heatmap.html
 
-http://users.isr.ist.utl.pt/~mtjspaan/readingGroup/ProofQlearning.pdf
+http://users.isr.ist.utl.pt/~mtjspaan/readingGroup/ProofQlearning.pdf	
 
 
 
