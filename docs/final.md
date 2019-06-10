@@ -279,6 +279,8 @@ Overall the agent reaches our expectation of learning, since the task in some wa
 
 https://matplotlib.org/3.1.0/gallery/images_contours_and_fields/image_annotated_heatmap.html
 
+http://users.isr.ist.utl.pt/~mtjspaan/readingGroup/ProofQlearning.pdf
+
 
 
 
