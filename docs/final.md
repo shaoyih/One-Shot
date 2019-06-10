@@ -167,15 +167,35 @@ Q-table is stored in a JSon file called q-table, which can be used for further l
 
 We calculated accuracy based on the arrow that hit the target and the total arrows we shoot.
 
-<img src="images/e21.png" width="500">
+<img src="images/e21.png" width="400">
 
-adfafwefqwe
+​									(Total training accuracy)
+
+The pie chart below is the accuracy we covered for all of our training Process. This accuracy Probably looks not good enough, but the result is much better than our expectation.  Since for our training cases, we have 120 different possible actions for any states, and states transition is not stable. Therefore, it takes really long time to train our agent. The pie charts below ordered as the order of training process so its trend already tell us the accuracy is getting better and better. 
+
+<br />
 
 <img src="images/e22.png" width="400">
 
+​								   (0-10000 actions made accuracy)
+
+The graph here is the early training process, so the accuracy is not high enough, since the epsilon is very high, that actions made heavily based on the random rate.
+
+<br />
+
 <img src="images/e23.png" width="400">
 
+​								   (10000-20000 actions made accuracy)
+
+The accuracy increased 8 percent from first process to second process, one reason is epsilon decrease and Q-table learned enough experience for hitting the Mob on different states.
+
+<br />
+
 <img src="images/e24.png" width="400">
+
+​								  (20000-30000 actions made accuracy)
+
+The accuracy is still in growth trend, but the growth rate is getting smoother.  Q-table is empty at early time,  as time passed more and more index get filled. After a period of time there is not that much empty indexes so the growth is getting smoother.
 
 
 
@@ -183,7 +203,11 @@ adfafwefqwe
 
 ### Hold VS. Shoot
 
+The graph below the is the percentage of shoot and hold, since hold is one of most important way that improve our accuracy of shoot. If there is no angle learned to hit the target, "hold" is a better choice than "shoot" to an angle we cannot hit the target.  This is why hold covered a large portion of agent decision action.
+
 <img src="images/e31.png" width="400">
+
+
 
 
 
@@ -193,15 +217,29 @@ adfafwefqwe
 
 <br />
 
+The graphs below record the reward status on different learning stages. The first graph record the first 200 arrows reward situation. The second graph record the middle stage of training and the last graph is the final stage of training. Y-axis is the reward for each arrow get, and X-axis shows the arrow numbers.
+
 <img src="images/e1.png">
+
+​								   	(0-200 arrows reward situation)
+
+Mob never get killed at early time since there is no reward above close to 100. Also the negative scores is much more than 0 and 15 since the agent is still randomly learning in this stage.
 
 <br />
 
 <img src="images/e2.png">
 
+​								 	(25000-25200 arrows reward situation)
+
+This graph is in middle stage of training. There are several 95 score reward on graph which means the agent has ability to kill the Mob now. but still more action is still concentrate on 0 which means the agent is still choose to hold at most of the time.
+
 <br />
 
 <img src="images/e3.png">
+
+​									(35000-35200 arrows reward situation)
+
+For the graph above, the point that didn't hit the target is getting less. In order word more kills that agent can get and shooting accuracy is getting higher. Similarly as the pie chart trend above the accuracy is getting better. Since, we need to hit target 3 times minimum in 5 arrows to kill the Mob, so the reward situation  reachs our expectation.
 
 
 
@@ -209,25 +247,35 @@ adfafwefqwe
 
 ### heatmap arrows shoot on different angles
 
+The heatmap represents the agent choices on different vertical and horizontal angles. The function of the heat map over here is to reduce the effect of random initialized position brought to final result. The horizontal axis represent horizontal angles and the vertical axis represent the vertical angles.  The first map is the map that arrow shoot on different angles. The second map shows the total number of Mob shot by agent on different angles.The last one is the map of accuracy on different angles.
+
+<img src="images/e42.png" >
+
+The map above shows that agent choose more angle on two sides of the horizontal axis. It means the Mob is more standing on two side of the closed area. 
+
+<br />
+
 
 
 <img src="images/e41.png" >
 
+Also more arrow hit the target for the position learned more especially for (85,-1), but this map is not good enough to represent the accuracy of different angles. So we generate the last graph.
 
-
-<img src="images/e42.png" >
+<br />
 
 
 
 <img src="images/e43.png" >
 
+The map shows that more the area get trained then its accuracy is higher, usually concentrate on two sides of the closed area. For the angles that can only hit the wall or out of the closed area, the agent will choose as less as possible.
 
+
+
+Overall the agent reaches our expectation of learning, since the task in some way is to complicated and unstable, so its accuracy also reach our expectation.
 
 ### <br />
 
 ## Reference
-
-
 
 https://matplotlib.org/3.1.0/gallery/images_contours_and_fields/image_annotated_heatmap.html
 
