@@ -37,23 +37,23 @@ def GetMissionXML(stri):
         return 'error'
 
 class Shoot(object):
-    def __init__(self, alpha = 0.4, gamma=0.1, n=1):
+    def __init__(self, alpha = 0.4, gamma=0.2, n=1):
         """Constructing an RL agent.
         Args
             alpha:  <float>  learning rate      (default = 0.3)
             gamma:  <float>  value decay rate   (default = 1)
             n:      <int>    number of back steps to update (default = 1)
         """
-        self.epsilon = 0.8 # chance of taking a random action instead of the best
+        self.epsilon = 0.3 # chance of taking a random action instead of the best
 
         # stats part
-        
+
         self.reward=[]
         self.totalCount=0
         self.totalOnTarget=0
         self.shootCount=0
-        
-        
+
+
         self.phasesTemp=0
         self.phasesOnTarget=[]
 
@@ -76,7 +76,6 @@ class Shoot(object):
         agent_host.sendCommand("setPitch "+str(angle[1]))
         time.sleep(0.1)
         agent_host.sendCommand("use 0")
-        time.sleep(0.1)
 
     def get_zombie_state(self,agent_host):
         # wait 0.1 s to be able to fetch the next worldState
@@ -98,51 +97,76 @@ class Shoot(object):
     def choose_action(self, s0):
         if s0 not in self.q_table:
             self.q_table[s0] = {}
-        for action in possible_actions:
-            if action not in self.q_table[s0]:
-                self.q_table[s0][action] = 0
+            for action in possible_actions:
+                if action not in self.q_table[s0]:
+                    self.q_table[s0][action] = 0
         """
         return pitch & angle
         """
         rand = random.uniform(0,1)
         if rand < self.epsilon:
+            print("random", end=" ")
             return (random.choice(m_yaw5),random.choice(pitch),random.choice(act))
         else:
+            print("qt",end=" ")
             angle = max(self.q_table[s0].items(), key=lambda x:x[1])[0]
         return angle
 
     def act(self, agent_host, angle):
         global life
+        global shot
+        dead = False
         if angle[2] == 'hold':
             return 0
         self.launch(angle)
-        time.sleep(0.3)
+        time.sleep(0.5)
         world_state = agent_host.getWorldState()
         for x in world_state.observations:
             entities=json.loads(x.text).get('entities')
-            if(entities[1]["name"]!="Zombie"):
-                return 100-5
             for y in entities:
                 if "Zombie" in y['name']:
                     target_life = y['life']
-                    if life - target_life > 0:
+                    if target_life == 0:
+                        dead = True
+                        break
+                    elif life - target_life > 0:
                         return 20-3
                     else:
                         return -10-5
-                
-        agent_host.sendCommand('quit')
-        
+            if dead:
+                break
+        shot = 5
+        return 100-5
 
     def update_q_table(self, S, A, R):
         curr_s, curr_a, curr_r = S[0], A[0], R[0]
-        G = sum([self.gamma ** i * R[i] for i in range(len(S))])
         old_q = self.q_table[curr_s][curr_a]
-        self.q_table[curr_s][curr_a] = old_q + self.alpha * (G - old_q)
-        print("state:",curr_s,"action:",curr_a,"reward:",self.q_table[curr_s][curr_a])
+        if(curr_s!=None):
+            if(curr_r>0):
+                G = sum([self.gamma ** i * R[i] for i in range(len(S))])
+                self.q_table[curr_s][curr_a] = old_q + self.alpha * (G - old_q)
+                print("state:",curr_s,"action:",curr_a,"reward:",self.q_table[curr_s][curr_a])
+            else:
+                ##hold and not hit the target, increase the value of the action angle twoard this angle, and q learning based on the next state that changed by zombie
+                nextState=tuple((curr_s[0]+curr_s[2],curr_s[1]+curr_s[3],0,0))
+                if nextState not in self.q_table:
+                    self.q_table[nextState] = {}
+                    for action in possible_actions:
+                        if action not in self.q_table[nextState]:
+                            self.q_table[nextState][action] = 0
+                ## deal with the case that didn't hit the target
+                self.q_table[curr_s][curr_a]=old_q+self.alpha*(curr_r+self.gamma*max(self.q_table[nextState].items(), key=lambda x:x[1])[1]-old_q)
+                ## increase the value of hold in this angle, use 3 as the reward for hold on this angle comparing with shoot
+                temp=list(curr_a)
+                temp[2]="hold"
+                curr_a=tuple(temp)
+                self.q_table[curr_s][curr_a]=old_q+self.alpha*(3+self.gamma*max(self.q_table[nextState].items(), key=lambda x:x[1])[1]-old_q)
+                
 
     def run(self, agent_host):
         """Learns the process to kill the mob in fewest shot. """
         S, A, R = deque(), deque(), deque()
+        global shot
         shot = 0
         while shot < 5:
             ##update total arrow shot
@@ -152,15 +176,15 @@ class Shoot(object):
             if(self.totalCount%10000==0):
                 self.phasesOnTarget.append(self.phasesTemp)
                 self.phasesTemp=0
-            
-            
+
+
             s0 = self.get_zombie_state(agent_host)
             a0= self.choose_action(s0)
             if a0[2] == 'shoot':
                 shot += 1
                 self.shootCount+=1
             r0 = self.act(agent_host, a0)
-            
+
             ##update arrow numbers for different angles
             if(a0[2]=='shoot'):
                 self.arrowAngleCount[tuple((a0[0],a0[1]))]+=1
@@ -173,7 +197,7 @@ class Shoot(object):
             ## update arrow hit the target on different angles
                 if(a0[2]=='shoot'):
                     self.arrowAngleOn[tuple((a0[0],a0[1]))]+=1
-                
+
 
             ##update reward
             S.append(s0)
@@ -190,12 +214,14 @@ class Shoot(object):
             R.popleft()
         agent_host.sendCommand('quit')
 
-    
 
     def loadTrainedData(self):
         path=os.path.dirname(os.path.abspath(__file__))
-        if(os.path.isfile(path+"\\"+"qtable-1.json")):
-            with open(path+"\\"+"qtable.json",'r') as file:
+        # if(os.path.isfile(path+"\\"+"qtable3000.json")):
+        #     with open(path+"\\"+"qtable3000.json",'r') as file:
+        if(os.path.isfile("qtable.json")):
+            with open("qtable.json",'r') as file:
+                print("load success")
                 data=json.load(file)
                 dicData=json.loads(data)
                 key=dicData.keys()
@@ -203,11 +229,11 @@ class Shoot(object):
                 k1=[eval(i) for i in key]
                 v1=[eval(i) for i in value]
                 self.q_table=dict(zip(*[k1,v1]))
-        
+
 
     def writeData(self):
 
-        with open('qtable-1.json','w') as outfile:
+        with open('qtable.json','w') as outfile:
             key=self.q_table.keys()
             value=self.q_table.values()
             strK=[str(i) for i in key]
@@ -217,7 +243,7 @@ class Shoot(object):
 
     def recordData(self,num):
 
-        with open('qtable'+str(num)+'.json','w') as outfile:
+        with open('qtable'+str(num+1)+'.json','w') as outfile:
             key=self.q_table.keys()
             value=self.q_table.values()
             strK=[str(i) for i in key]
@@ -239,24 +265,24 @@ class Shoot(object):
                 self.arrowAngleOn=eval(tempDict["arrowAngleOn"])
         else:
             self.getArrowAngle()
-            
-        
+
+
     def writeStats(self):
         stats={"reward":self.reward,
                 "totalCount":self.totalCount,
                 "totalOnTarget":self.totalOnTarget,
                "phasesTemp":self.phasesTemp,
                 "phasesOnTarget":self.phasesOnTarget,
-                "shootCount":self.shootCount,               
+                "shootCount":self.shootCount,
                 "arrowAngleCount":str(self.arrowAngleCount),
                 "arrowAngleOn":str(self.arrowAngleOn)
                }
-        
+
         with open("stats.json",'w') as OF:
              json.dump(stats, OF)
-            
-        
-            
+
+
+
 
     def getArrowAngle(self):
         angleDict=dict()
@@ -267,16 +293,17 @@ class Shoot(object):
                 angleDict2[tuple((i,j))]=0
         self.arrowAngleCount=angleDict
         self.arrowAngleOn=angleDict2
-                    
-        
+
+
 
 def main():
     num_reps = 60000
     odie = Shoot(n=0)
     try:
         for iRepeat in range(num_reps):
+            print("session:",iRepeat)
             ## update
-            if(iRepeat%1000==0):
+            if(iRepeat%100==0):
                 odie.recordData(iRepeat)
                 odie.writeData()
                 odie.writeStats()
@@ -305,6 +332,8 @@ def main():
             # Every few iteration Odie will show us the best policy that he learned.
             odie.run(agent_host)
             time.sleep(1)
+
+
     except KeyboardInterrupt:
         print("file saved")
         odie.writeData()
@@ -315,7 +344,9 @@ def main():
         odie.writeStats()
 
 
+
 life = 0
+shot = 0
 if __name__ == '__main__':
     print('Starting...', flush=True)
     my_client_pool = MalmoPython.ClientPool()
