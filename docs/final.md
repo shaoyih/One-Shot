@@ -55,6 +55,7 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
   
 
   - Easy: is that mode that Mob will trapped into a ***3x3*** closed area. (81 States)
+   <br />
 <img src="images/s1.png" width="500">
 
   <br />
@@ -63,6 +64,7 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
 
   - Medium: is that mode that Mob will trapped into a ***5x5*** closed area.(225 States) ***Current mode we trained***
   
+  <br />
   
 <img src="images/s2.png" width="500">
 
@@ -71,6 +73,8 @@ At the beginning,  when Q - table is empty , there is no Q-score can be extracte
   <br />
 
   - Hard:is that mode that Mob will trapped into a ***7x7*** closed area.(441 States)
+  
+  <br />
 <img src="images/s3.png" width="500">
 
   <br />
