@@ -279,6 +279,32 @@ The map shows that more the area get trained then its accuracy is higher, usuall
 
 
 
+<br>
+
+### Possible Error source:
+
+Based on our group discussion, there are two possible factors that can affect the accuracy of our system
+
+1. The arrows we shoot using the same y, pitch angle can drop at the different positions. As we can see from the graph below, the arrows destination varies a lot even if we use exactly the same angle to shoot
+
+
+
+<br>
+
+<img src="images/e44.jpeg">
+<img src="images/e44-1.jpeg">
+
+<br>
+2. Even if the target is standing at the same position, target’s different facing direction can result in a different range of answer. We can tell from the different shooting area in the graphs here.
+
+
+
+<br>
+
+<img src="images/e45.jpg">
+<img src="images/e45-1.jpg">
+<br>
+
 Overall the agent reaches our expectation of learning, since the task in some way is to complicated and unstable, so its accuracy also reach our expectation.
 
 ### <br />
