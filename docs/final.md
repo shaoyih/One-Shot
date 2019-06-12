@@ -305,7 +305,7 @@ Based on our group discussion, there are two possible factors that can affect th
 <img src="images/e45-1.jpg">
 <br>
 
-Overall the agent reaches our expectation of learning, since the task in some way is to complicated and unstable, so its accuracy also reach our expectation.
+Overall the agent reaches our expectation of learning, since the task in some way is too complicated and unstable, so its accuracy also reach our expectation.
 
 ### <br />
 
