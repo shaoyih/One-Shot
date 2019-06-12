@@ -7,9 +7,9 @@ title:  Team
 
 
 ## Shaoyi Huang
-***UCI Net ID***: Shaoyih2
+***UCI Net ID***: shaoyih2
 
-## Kaige wang
+## Kaige Wang
 ***UCI Net ID***: kaigew
 
 ## Chaoyuan Hsueh
