@@ -4,8 +4,10 @@ title:  Status
 ---
 
 ###Once upon a time...
-      There was a little boy called Q. He lived in a wonderland named DBH. People in DBH live happily together. They sing, they dance, and they code together! Suddenly, a group of mob broke into the village, they rob and bully the residents in DBH. From then on, mob came to the village occasionally. Q cannot stand mobs bullying their family and friends. He decides to learn archery to defense the mobs and protect the residents in DBH. However, Q doesn’t have that much arrows. Our job is to help Q to improve his archery skill so that he can kill the mob using fewest arrows. We used Q-learning from Reinforcement learning to achieve this goal. And we received a pretty good result
-<img src="images/e44.png">
+
+There was a little boy called Q. He lived in a wonderland named DBH. People in DBH live happily together. They sing, they dance, and they code together! Suddenly, a group of mob broke into the village, they rob and bully the residents in DBH. From then on, mob came to the village occasionally. Q cannot stand mobs bullying their family and friends. He decides to learn archery to defense the mobs and protect the residents in DBH. However, Q doesn’t have that much arrows. Our job is to help Q to improve his archery skill so that he can kill the mob using fewest arrows. We used Q-learning from Reinforcement learning to achieve this goal. And we received a pretty good result
+
+<img src="sc1.gif">
 
 
 Source code: https://github.com/shaoyih/One-Shot
