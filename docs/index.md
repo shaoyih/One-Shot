@@ -32,7 +32,7 @@ More goals are coming!
 We're have two rectangle stages separated by a 2 block-length air gap, where Mob is standing on one stage, agent is facing the mob on the other. We chose Zombie as the Mob(target). Zombie has a 15 life long(3 shot). Time is set to sunset so that Zombie can still live. Peacons and Glowstone are used as our light resource.
 
 
-## trailor
+## Trailor
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Fw2nhFTxk3Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
