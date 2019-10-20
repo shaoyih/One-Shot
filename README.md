@@ -1,4 +1,5 @@
 # Minecraft-AI: One-Shot
 
-## Status
-check website : https://shaoyih.github.io/One-Shot/ 
+## Website
+contians status and progress
+https://shaoyih.github.io/One-Shot/ 
